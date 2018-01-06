@@ -67,6 +67,12 @@
 #define B_SHORT_CASTLE_BIT			0X04
 #define B_LONG_CASTLE_BIT   		0X08
 
+#define ALL_CASTLES ( \
+        W_SHORT_CASTLE_BIT | \
+        W_LONG_CASTLE_BIT  | \
+        B_SHORT_CASTLE_BIT | \
+        B_LONG_CASTLE_BIT )
+
 
 #define TURN(x,y)	((x[y[0]][y[1]] > 0) ? WHITE: BLACK)
 
@@ -94,6 +100,7 @@ typedef enum {
     CHECK_MATE,
 } check_status_t;
 
+
 /**
  *
  **/ 
@@ -114,6 +121,17 @@ struct Node {
 };
 
 typedef struct Node Node_t;
+
+static const Board initial_board = {
+    [ROOK_W, KNIGHT_W, BISHOP_W, QUEEN_W, KING_W, BISHOP_W, KNIGHT_W, ROOK_W],
+    [PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W],
+    [ROOK_W, KNIGHT_W, BISHOP_W, QUEEN_W, KING_W, BISHOP_W, KNIGHT_W, ROOK_W]
+};
 
 #define DEBUG
 
