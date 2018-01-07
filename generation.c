@@ -13,12 +13,12 @@ retval_t node_init(Node_t *node)
     }
     
     copy_initial_board(node->board);
+    strcpy(node->notation, "");
 
-    node->notation      = "";
     node->value         = 0;
     node->turn          = WHITE;
-    node->chech_status  = NOT_CHECK;
-    node-castles        = ALL_CASTLES;
+    node->check_status  = NOT_CHECK;
+    node->castles        = ALL_CASTLES;
 
     node->child         = NULL; 
     node->next          = NULL; 
