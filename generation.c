@@ -12,7 +12,7 @@ retval_t node_init(Node_t *node)
         return RV_ERROR;
     }
     
-    copy_initial_board(node->board);
+    copy_initial_board(&node->board);
     strcpy(node->notation, "");
 
     node->value         = 0;
@@ -23,4 +23,6 @@ retval_t node_init(Node_t *node)
     node->child         = NULL; 
     node->next          = NULL; 
     node->parent        = NULL; 
+
+    return RV_SUCCESS;
 }
