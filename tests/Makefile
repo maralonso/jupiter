@@ -1,6 +1,6 @@
 EXEC    = engine-tests
 
-CFLAGS  = -c -g -fPIC -Wall
+CFLAGS  = -c -g -Wall
 LDFLAGS =
 
 CSOURCES = $(wildcard *.c) 
