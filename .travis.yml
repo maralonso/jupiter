@@ -7,4 +7,5 @@ os:
     -linux
 
 script:
-    (make -C engine/ lib)
+    - make -C tests/
+    - tests/engine-tests  
