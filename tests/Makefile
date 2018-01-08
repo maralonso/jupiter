@@ -1,22 +1,21 @@
 EXEC    = engine-tests
 
 CFLAGS  = -c -g -Wall
-LDFLAGS =
+LDFLAGS = -Lcu/ -lcu
 
 CSOURCES = $(wildcard *.c) 
-CSOURCES += cutest-1.5/CuTest.c 
 CSOURCES += ../engine/generation.c
 
 COBJECTS = $(CSOURCES:.c=.o)               
 
-INCLUDES = -I cutest-1.5/ \
+INCLUDES = -I cu/ \
 		  -I ../engine/ 
 
 
 all: $(CSOURCES) $(EXEC) 
 
 $(EXEC): $(COBJECTS)
-	$(CC) $(LDFLAGS) $(INCLUDES) $(COBJECTS) -o $@
+	$(CC) $(INCLUDES) $(COBJECTS) -o $@ $(LDFLAGS)
 	rm -rf *.o                               
 	@echo ''
 	@echo 'Finished building target $@'
@@ -28,6 +27,5 @@ $(EXEC): $(COBJECTS)
 
 clean:
 		rm -rf *.o
-		rm -rf $(LIBRARY)
 		rm -rf $(EXEC)
 

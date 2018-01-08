@@ -1,22 +1,20 @@
-#include <stdio.h>
-#include "CuTest.h"
+#include "test_generation.h"
+#include "cu/cu.h"
 
-CuSuite* getGenerationSuite();
+  // This struct contains all test suites
+  TEST_SUITES {
+      TEST_SUITE_ADD(generation), // add T1 test suite
+      TEST_SUITES_CLOSURE
+  };
 
-void RunAllTests(void)
+int main(int argc, char *argv[])
 {
-	CuString *output = CuStringNew();
-	CuSuite* suite = CuSuiteNew();
+   // Set up directory where are stored files with outputs from test
+   // suites
+   //CU_SET_OUT_PREFIX("regressions/");
 
-	CuSuiteAddSuite(suite, getGenerationSuite());
+   // Run all test suites
+   CU_RUN(argc, argv);
 
-	CuSuiteRun(suite);
-	CuSuiteSummary(suite, output);
-	CuSuiteDetails(suite, output);
-	printf("%s\n", output->buffer);
-}
-
-int main(void)
-{
-	RunAllTests();
+   return 0;
 }
