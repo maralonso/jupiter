@@ -4,6 +4,6 @@
 #include "board.h"
 
 retval_t node_init(Node_t *node);
+retval_t get_moves(Node_t *node);
 
 #endif
-
