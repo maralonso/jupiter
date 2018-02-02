@@ -73,7 +73,6 @@
         B_SHORT_CASTLE_BIT | \
         B_LONG_CASTLE_BIT )
 
-
 #define TURN(x,y)	((x[y[0]][y[1]] > 0) ? WHITE: BLACK)
 
 
@@ -85,6 +84,8 @@ typedef enum {
     RV_SUCCESS = 0,
     RV_ERROR,
 } retval_t;
+
+#define SUCCES_OR_RETURN(_rv_)  {retval_t __rv = _rv_; if (RV_SUCCESS != __rv) return __rv;}
 
 /**
  *
@@ -121,6 +122,22 @@ struct Node {
 };
 
 typedef struct Node Node_t;
+
+/**
+ *
+ **/
+typedef retval_t (*Evaluation_Function) (Node_t *node, uint8_t rank, uint8_t file);
+inline retval_t EVALUATE_BOARD(Node_t *node, Evaluation_Function func)
+{
+    retval_t rv;
+    for(int i = RANK_1; i <= RANK_8; i++) {
+        for(int j = FILE_A; j <= FILE_H; j++) {
+            rv = func(node, i , j);
+            SUCCES_OR_RETURN(rv);
+        }
+    }
+    return RV_SUCCESS;
+}
 
 static const Board initial_board = {
     {ROOK_W, KNIGHT_W, BISHOP_W, QUEEN_W, KING_W, BISHOP_W, KNIGHT_W, ROOK_W},
