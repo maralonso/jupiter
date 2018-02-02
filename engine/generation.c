@@ -9,7 +9,7 @@ static void copy_initial_board(Board *board)
 
 static retval_t get_piece_moves(Node_t *node, uint8_t rank, uint8_t file)
 {
-    switch(node->board[rank][file]) {
+    switch(node->board[rank][file] * node->turn) {
         case PAWN:
             break;
         case ROOK:
