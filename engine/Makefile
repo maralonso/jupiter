@@ -1,7 +1,7 @@
 LIBRARY = chess-engine.a
 EXEC    = engine
 
-CFLAGS  = -c -g -fPIC -Wall -Werror
+CFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror
 LDFLAGS =
 
 CSOURCES = $(wildcard *.c) $(wildcard pieces/*.c)
