@@ -1,14 +1,16 @@
-LIBRARY = chess-engine.a
+LIBRARY = libchessengine.a
 EXEC    = engine
 
-CFLAGS  = -c -g -fPIC -Wall
+CFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror
 LDFLAGS =
 
-CSOURCES = generation.c
+CSOURCES = $(wildcard *.c) $(wildcard pieces/*.c)
+
+VPATH = pieces
 
 COBJECTS = $(CSOURCES:.c=.o)               
 
-INCLUDES = 
+INCLUDES = -I ./ -I pieces/include
 
 LIBS = 
 
@@ -41,6 +43,7 @@ $(EXEC): $(COBJECTS)
 
 clean:
 		rm -rf *.o
+		rm -rf pieces/*.o
 		rm -rf $(LIBRARY)
 		rm -rf $(EXEC)
 

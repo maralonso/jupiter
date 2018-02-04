@@ -7,23 +7,23 @@
 /**
  * Squares
  **/
-#define RANK_1	0
-#define RANK_2	1
-#define RANK_3	2
-#define RANK_4	3
-#define RANK_5	4
-#define RANK_6	5
-#define RANK_7	6
-#define RANK_8	7
+#define COL_A	0
+#define COL_B	1
+#define COL_C	2
+#define COL_D	3
+#define COL_R	4
+#define COL_F	5
+#define COL_G	6
+#define COL_H	7
 
-#define FILE_A	0
-#define FILE_B	1
-#define FILE_C	2
-#define FILE_D	3
-#define FILE_E	4
-#define FILE_F	5
-#define FILE_G	6
-#define FILE_H	7
+#define FILE_1	0
+#define FILE_2	1
+#define FILE_3	2
+#define FILE_4	3
+#define FILE_5	4
+#define FILE_6	5
+#define FILE_7	6
+#define FILE_8	7
 
 
 
@@ -73,7 +73,6 @@
         B_SHORT_CASTLE_BIT | \
         B_LONG_CASTLE_BIT )
 
-
 #define TURN(x,y)	((x[y[0]][y[1]] > 0) ? WHITE: BLACK)
 
 
@@ -84,7 +83,10 @@ typedef int16_t  Board[8][8];
 typedef enum {
     RV_SUCCESS = 0,
     RV_ERROR,
+    RV_NO_MOVE_LEFT,
 } retval_t;
+
+#define SUCCES_OR_RETURN(_rv_)  {retval_t __rv = _rv_; if (RV_SUCCESS != __rv) return __rv;}
 
 /**
  *
@@ -121,6 +123,22 @@ struct Node {
 };
 
 typedef struct Node Node_t;
+
+/**
+ *
+ **/
+typedef retval_t (*Evaluation_Function) (Node_t *node, uint8_t rank, uint8_t file);
+inline retval_t EVALUATE_BOARD(Node_t *node, Evaluation_Function func)
+{
+    retval_t rv;
+    for(int i = FILE_1; i <= FILE_8; i++) {
+        for(int j = COL_A; j <= COL_H; j++) {
+            rv = func(node, i , j);
+            SUCCES_OR_RETURN(rv);
+        }
+    }
+    return RV_SUCCESS;
+}
 
 static const Board initial_board = {
     {ROOK_W, KNIGHT_W, BISHOP_W, QUEEN_W, KING_W, BISHOP_W, KNIGHT_W, ROOK_W},

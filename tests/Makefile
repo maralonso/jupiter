@@ -1,20 +1,21 @@
 EXEC    = engine-tests
 
-CFLAGS  = -c -g -Wall
-LDFLAGS = -Lcu/ -lcu
+CFLAGS  = -c -g -Wall -std=c99
+LDFLAGS = -Lcu/ -lcu -L../engine -lchessengine
 
 CSOURCES = $(wildcard *.c) 
-CSOURCES += ../engine/generation.c
 
 COBJECTS = $(CSOURCES:.c=.o)               
 
 INCLUDES = -I cu/ \
-		  -I ../engine/ 
+		  -I ../engine
 
 
 all: $(CSOURCES) $(EXEC) 
 
 $(EXEC): $(COBJECTS)
+	make -C ../engine
+	@echo ''
 	$(CC) $(INCLUDES) $(COBJECTS) -o $@ $(LDFLAGS)
 	rm -rf *.o                               
 	@echo ''
