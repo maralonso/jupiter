@@ -1,4 +1,4 @@
-LIBRARY = chess-engine.a
+LIBRARY = libchessengine.a
 EXEC    = engine
 
 CFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror

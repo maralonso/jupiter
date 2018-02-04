@@ -1,6 +1,7 @@
 #include "board.h"
 #include <string.h>
 
+extern  retval_t EVALUATE_BOARD(Node_t *node, Evaluation_Function func);
 
 static void copy_initial_board(Board *board)
 {
