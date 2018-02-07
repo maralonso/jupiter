@@ -69,7 +69,7 @@ retval_t insert_move(Node_t *parent, Move_t move)
         return RV_ERROR;
     }
 
-    Node_t *new = create_node(); 
+    Node_t *new = create_node();
     if (new == NULL) {
         return RV_NO_MEMORY;
     }
@@ -82,7 +82,7 @@ retval_t insert_move(Node_t *parent, Move_t move)
     new->value  = 0;
 
     new->check_status = 0;   //TODO
-    new->castles      = 0;   //TODO    
+    new->castles      = 0;   //TODO
     strcpy(new->notation, ""); //TODO
 
     memcpy(&new->mov, &move, sizeof(Move_t));
