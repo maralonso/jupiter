@@ -1,17 +1,21 @@
 #include "board.h"
 #include "pieces.h"
+#include "generation.h"
+
+#include <stdio.h>
 
 static retval_t rook_eval(Node_t *node, square sq, uint8_t file, uint8_t col)
 {
-    if ((col == sq[0] && file != sq[1]) ||
-        (col != sq[0] && file == sq[1])) {
+    if ((file == sq[0] && col != sq[1]) ||
+        (file != sq[0] && col == sq[1])) {
 
         if ((node->board[file][col] * node->turn) <= 0) {
-             //insert node          
+            Move_t mov = {{sq[0], sq[1]}, {file, col}};
+            SUCCES_OR_RETURN(insert_move(node, mov));
         }
 
         if (node->board[file][col] != 0) {
-            //return
+            return RV_NO_MOVE_LEFT;
         }
     }
 
