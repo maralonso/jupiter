@@ -109,7 +109,7 @@ void cu_run(int argc, char *argv[])
     }else{
         tss = cu_test_suites;
         while (tss->name != NULL && tss->test_suite != NULL){
-            cu_run_fork(tss->name, tss->test_suite, -1);
+            run_test_suite(tss->name, tss->test_suite, -1);
             tss++;
         }
         cu_print_results();
@@ -224,7 +224,7 @@ static void cu_run_fork(const char *ts_name, cu_test_suite_t *ts,
 
         close(fd);
 
-        fprintf(stdout, " -> %s [DONE]\n\n", ts_name);
+        fprintf(stdout, "-> %s [DONE]\n\n", ts_name);
         fflush(stdout);
     }
 
@@ -236,27 +236,23 @@ static int run_test(const char *t_name, cu_test_func_t t_func)
     char buffer[MSGBUF_LEN];
     int len;
 
-    if (cu_out_per_test)
-        redirect_test_out_err(cu_current_test_suite, t_name);
-
     test_failed = 0;
 
     /* set up name of test for later messaging */
     cu_current_test = t_name;
 
-    /* send message what test is currently running */
-    len = snprintf(buffer, MSGBUF_LEN, "%c    --> Running %s...\n",
-                   TEST_NAME, cu_current_test);
-    write(fd, buffer, len);
+    printf("\t--> Running %s...", cu_current_test);
 
     /* run test */
     (*(t_func))();
 
     if (test_failed){
-        MSG_TEST_FAILED;
+        cu_fail_tests++;
         test_suite_failed = 1;
+        printf("\t[FAIL]\n", cu_current_test);
     }else{
-        MSG_TEST_SUCCEED;
+       cu_success_tests++;
+        printf("\t[OK]\n", cu_current_test);
     }
 
     return test_suite_failed;
@@ -270,9 +266,7 @@ static void run_test_suite(const char *ts_name, cu_test_suite_t *ts,
     /* set up current test suite name for later messaging... */
     cu_current_test_suite = ts_name;
 
-    /* redirect stdout and stderr */
-    if (!cu_out_per_test)
-        redirect_out_err(cu_current_test_suite);
+   printf("-> %s [IN PROGESS]\n", ts_name);
 
     while (test_id == -1 && ts->name != NULL && ts->func != NULL){
         test_suite_failed |= run_test(ts->name, ts->func);
@@ -285,13 +279,12 @@ static void run_test_suite(const char *ts_name, cu_test_suite_t *ts,
     }
 
     if (test_suite_failed){
-        MSG_TEST_SUITE_FAILED;
+        cu_fail_test_suites++;
     }else{
-        MSG_TEST_SUITE_SUCCEED;
+        cu_success_test_suites++;
     }
 
-    /* close redirected stdout and stderr */
-    close_out_err();
+   printf("-> %s [DONE]\n\n", ts_name);
 }
 
 
@@ -355,21 +348,15 @@ static void receive_messages(void)
 
 void cu_success_assertion(void)
 {
-    MSG_CHECK_SUCCEED;
+    cu_success_checks++;
 }
 
 void cu_fail_assertion(const char *file, int line, const char *msg)
 {
-    char buf[MSGBUF_LEN];
-    int len;
-
-    len = snprintf(buf, MSGBUF_LEN, "%c%s:%d (%s::%s) :: %s\n",
-            CHECK_FAILED,
-            file, line, cu_current_test_suite, cu_current_test, msg);
-    write(fd, buf, len);
-
+    cu_fail_checks++;
     /* enable test_failed flag */
     test_failed = 1;
+    printf("\n%s file:%d - %s", file, line, msg);
 }
 
 static void cu_print_results(void)
