@@ -1,4 +1,5 @@
 #include "board.h"
+#include "node.h"
 #include <string.h>
 
 extern  retval_t EVALUATE_BOARD(Node_t *node, Evaluation_Function func);
@@ -30,28 +31,64 @@ static retval_t get_piece_moves(Node_t *node, uint8_t rank, uint8_t file)
     return RV_SUCCESS;
 }
 
-retval_t node_init(Node_t *node)
+retval_t move_init(Node_t **node)
 {
     if (node == NULL) {
         return RV_ERROR;
     }
+
+    Node_t *new_node = create_node();
+    if (new_node == NULL) {
+        return RV_NO_MEMORY;
+    }
     
-    copy_initial_board(&node->board);
-    strcpy(node->notation, "");
+    copy_initial_board(&new_node->board);
+    strcpy(new_node->notation, "");
 
-    node->value         = 0;
-    node->turn          = WHITE;
-    node->check_status  = NOT_CHECK;
-    node->castles        = ALL_CASTLES;
+    new_node->value         = 0;
+    new_node->turn          = WHITE;
+    new_node->check_status  = NOT_CHECK;
+    new_node->castles        = ALL_CASTLES;
 
-    node->child         = NULL; 
-    node->next          = NULL; 
-    node->parent        = NULL; 
+    new_node->child         = NULL;
+    new_node->next          = NULL;
+    new_node->parent        = NULL;
 
+    *node = new_node;
     return RV_SUCCESS;
 }
 
 retval_t get_moves(Node_t *node)
 {
     return EVALUATE_BOARD(node, get_piece_moves);
+}
+
+retval_t insert_move(Node_t *parent, Move_t move)
+{
+    if (parent == NULL) {
+        return RV_ERROR;
+    }
+
+    Node_t *new = create_node(); 
+    if (new == NULL) {
+        return RV_NO_MEMORY;
+    }
+
+    new->child  = NULL;
+    new->next   = NULL;
+    new->parent = NULL;
+
+    new->turn   = parent->turn * -1;
+    new->value  = 0;
+
+    new->check_status = 0;   //TODO
+    new->castles      = 0;   //TODO    
+    strcpy(new->notation, ""); //TODO
+
+    memcpy(&new->mov, &move, sizeof(Move_t));
+    memcpy(&new->board, &parent->board, sizeof(Board));
+
+    insert_node(parent, new);
+
+    return RV_SUCCESS;
 }

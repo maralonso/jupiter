@@ -3,7 +3,8 @@
 
 #include "board.h"
 
-retval_t node_init(Node_t *node);
+retval_t move_init(Node_t **node);
 retval_t get_moves(Node_t *node);
+retval_t insert_move(Node_t *parent, Move_t move);
 
 #endif
