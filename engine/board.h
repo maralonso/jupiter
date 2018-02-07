@@ -84,6 +84,7 @@ typedef enum {
     RV_SUCCESS = 0,
     RV_ERROR,
     RV_NO_MOVE_LEFT,
+    RV_NO_MEMORY,
 } retval_t;
 
 #define SUCCES_OR_RETURN(_rv_)  {retval_t __rv = _rv_; if (RV_SUCCESS != __rv) return __rv;}
