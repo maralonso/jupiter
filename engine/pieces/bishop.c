@@ -1,11 +1,11 @@
+#include <stdlib.h>
 #include "board.h"
 #include "pieces.h"
 #include "generation.h"
 
-static retval_t rook_eval(Node_t *node, square sq, uint8_t file, uint8_t col)
+static retval_t bishop_eval(Node_t *node, square sq, uint8_t file, uint8_t col)
 {
-    if ((file == sq[0] && col != sq[1]) ||
-        (file != sq[0] && col == sq[1])) {
+    if (abs(file - sq[0]) == abs(col - sq[1])) {
 
         if ((node->board[file][col] * node->turn) <= 0) {
             Move_t mov = {{sq[0], sq[1]}, {file, col}};
@@ -20,8 +20,8 @@ static retval_t rook_eval(Node_t *node, square sq, uint8_t file, uint8_t col)
     return RV_SUCCESS;
 }
 
-retval_t get_rook_moves(Node_t *node, square sq)
+retval_t get_bishop_moves(Node_t *node, square sq)
 {
     uint8_t rotation = ROTATION_0 | ROTATION_90 | ROTATION_180 | ROTATION_270;
-    return eval_with_rotation(node, sq, rotation, rook_eval); 
+    return eval_with_rotation(node, sq, rotation, bishop_eval); 
 }
