@@ -21,7 +21,7 @@ inline retval_t EVAL_ROTATE_0(Node_t *node, square sq, Eval_Whith_Rotation func)
     retval_t rv;
 
     for (int i = sq[0]; i <= FILE_8; i++) {
-        for (int j = sq[1]; j <= COL_H; j++) {
+        for (int j = sq[1] + 1; j <= COL_H; j++) {
             rv = func(node,sq, i, j);
             SUCCES_OR_RETURN(rv);
         } 
@@ -59,7 +59,7 @@ inline retval_t EVAL_ROTATE_270(Node_t *node, square sq, Eval_Whith_Rotation fun
 {
     retval_t rv;
 
-    for (int i = sq[1] - 1; i >= COL_A; i--) {
+    for (int i = sq[1]; i >= COL_A; i--) {
         for (int j = sq[0] + 1; j <= FILE_8; j++) {
             rv = func(node, sq, j, i);
             SUCCES_OR_RETURN(rv);

@@ -147,5 +147,5 @@ TEST(test_rook_takes)
     rv = get_rook_moves(node, rook); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(4, count);
+    assertEquals(5, count);
 }
