@@ -10,6 +10,7 @@
 retval_t get_rook_moves(Node_t *node, square sq);
 retval_t get_bishop_moves(Node_t *node, square sq);
 retval_t get_knight_moves(Node_t *node, square sq);
+retval_t get_king_moves(Node_t *node, square sq);
 
 typedef retval_t (*Eval_Whith_Rotation)(
         Node_t *node, 
