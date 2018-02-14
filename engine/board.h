@@ -11,7 +11,7 @@
 #define COL_B	1
 #define COL_C	2
 #define COL_D	3
-#define COL_R	4
+#define COL_E	4
 #define COL_F	5
 #define COL_G	6
 #define COL_H	7
