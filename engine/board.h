@@ -117,6 +117,7 @@ struct Node {
 	check_status_t  check_status;
 
 	int8_t castles;
+    int8_t passant;
 	
 	struct Node  *child;
 	struct Node  *next;
