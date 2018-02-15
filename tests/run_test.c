@@ -4,6 +4,7 @@
 #include "test_bishop.h"
 #include "test_knight.h"
 #include "test_king.h"
+#include "test_pawn.h"
 #include "cu/cu.h"
 
 TEST_SUITES {
@@ -13,6 +14,7 @@ TEST_SUITES {
       TEST_SUITE_ADD(bishop_moves), 
       TEST_SUITE_ADD(knight_moves), 
       TEST_SUITE_ADD(king_moves), 
+      TEST_SUITE_ADD(pawn_moves),
       TEST_SUITES_CLOSURE
 };
 

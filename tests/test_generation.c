@@ -16,6 +16,7 @@ TEST(test_move_init)
     assertEquals(node->turn, WHITE);
     assertEquals(node->check_status, NOT_CHECK);
     assertEquals(node->castles, ALL_CASTLES);
+    assertEquals(node->passant, 0);
     assertEquals(node->child, NULL);
     assertEquals(node->next, NULL);
     assertEquals(node->parent, NULL);
