@@ -66,16 +66,16 @@ retval_t get_pawn_moves(Node_t *node, square sq)
     }
 
     if ((sq[0] + node->turn) % 7 == 0) {
-        return eval_with_rotation(node, sq, rotation, pawn_promote);
+        return exec_with_rotation(node, sq, rotation, pawn_promote);
     } else {
-        rv = eval_with_rotation(node, sq, rotation, pawn_takes);
+        rv = exec_with_rotation(node, sq, rotation, pawn_takes);
         SUCCES_OR_RETURN(rv);
 
         if ((sq[0] + (3 * node->turn)) % 7 == 0) {
-            rv = eval_with_rotation(node, sq, rotation, pawn_passant);
+            rv = exec_with_rotation(node, sq, rotation, pawn_passant);
             SUCCES_OR_RETURN(rv);
         }
 
-        return eval_with_rotation(node, sq, rotation, pawn_moves);
+        return exec_with_rotation(node, sq, rotation, pawn_moves);
     }
 }

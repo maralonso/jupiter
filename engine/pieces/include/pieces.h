@@ -72,7 +72,7 @@ inline retval_t EVAL_ROTATE_270(Node_t *node, square sq, Eval_Whith_Rotation fun
     return RV_SUCCESS;
 }
 
-inline retval_t eval_with_rotation(Node_t *node, square sq, 
+inline retval_t exec_with_rotation(Node_t *node, square sq, 
                               uint8_t rotation, void *func)
 {
     if (rotation & ROTATION_0) {
