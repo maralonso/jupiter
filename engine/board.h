@@ -108,7 +108,7 @@ typedef enum {
  *
  **/ 
 struct Node {
-	Move_t mov;
+    //Move_t mov;
 	Board board;
 	char notation[10];
 	int value;

@@ -59,7 +59,6 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece)
     }
 
     new->turn   = parent->turn * -1;
-    memcpy(&new->mov, &move, sizeof(Move_t));
     memcpy(&new->board, &parent->board, sizeof(Board));
 
     new->board[move.from[0]][move.from[1]] = 0;
@@ -115,7 +114,6 @@ retval_t insert_move(Node_t *parent, Move_t move)
     }
 
     new->turn   = parent->turn * -1;
-    memcpy(&new->mov, &move, sizeof(Move_t));
     memcpy(&new->board, &parent->board, sizeof(Board));
 
     int16_t aux = new->board[move.from[0]][move.from[1]];
