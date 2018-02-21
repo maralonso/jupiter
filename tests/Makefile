@@ -9,8 +9,7 @@ VPATH=cu
 
 COBJECTS = $(CSOURCES:.c=.o)               
 
-INCLUDES = -I cu/ \
-		  -I ../engine
+INCLUDES = -I ./cu -I ./  -I ./include -I ../engine
 
 all: $(CSOURCES) $(EXEC) 
 

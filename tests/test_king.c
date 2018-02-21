@@ -18,6 +18,13 @@ TEST(test_king_no_moves)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(count, 1);
+    
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_E};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 1);
 }
 
 TEST(test_king_moves_right_up)
@@ -35,7 +42,7 @@ TEST(test_king_moves_right_up)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {KING_B, 0, 0, 0, 0, 0, 0, 0}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -44,6 +51,13 @@ TEST(test_king_moves_right_up)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(4, count);
+    
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_A};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 7);
 }
 
 TEST(test_king_moves_right_down)
@@ -54,7 +68,7 @@ TEST(test_king_moves_right_down)
     rv = move_init(&node);
 
     Board board = {
-        {0, 0, 0, 0, 0, 0, 0, 0},
+        {KING_B, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -70,6 +84,13 @@ TEST(test_king_moves_right_down)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(4, count);
+    
+    node->turn = BLACK;
+    square king_b = {FILE_1, COL_A};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 7);
 }
 
 TEST(test_king_moves_left_up)
@@ -87,7 +108,7 @@ TEST(test_king_moves_left_up)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, 0, 0, 0, 0, 0, KING_B}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -96,6 +117,13 @@ TEST(test_king_moves_left_up)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(4, count);
+    
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_H};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 7);
 }
 
 TEST(test_king_moves_left_down)
@@ -106,7 +134,7 @@ TEST(test_king_moves_left_down)
     rv = move_init(&node);
 
     Board board = {
-        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, KING_B},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -122,6 +150,13 @@ TEST(test_king_moves_left_down)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(4, count);
+    
+    node->turn = BLACK;
+    square king_b = {FILE_1, COL_H};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 7);
 }
 
 TEST(test_king_takes)
@@ -137,9 +172,9 @@ TEST(test_king_takes)
         {0, 0, PAWN_B, PAWN_B, PAWN_B, 0, 0, 0},
         {0, 0, PAWN_B, KING_W, PAWN_B, 0, 0, 0},
         {0, 0, PAWN_B, PAWN_B, PAWN_B, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, PAWN_W, PAWN_W, PAWN_W, 0, 0, 0},
+        {0, 0, PAWN_W, KING_B, PAWN_W, 0, 0, 0},
+        {0, 0, PAWN_W, PAWN_W, PAWN_W, 0, 0, 0}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -148,5 +183,12 @@ TEST(test_king_takes)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(9, count);
+    
+    node->turn = BLACK;
+    square king_b = {FILE_7, COL_D};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 17);
 }
 

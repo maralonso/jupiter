@@ -25,6 +25,7 @@ $(LIBRARY): $(COBJECTS)
 	@echo 'Building Library: $@'
 	ar rcs $@ $(LDFLAGS) $(LIBS) $(COBJECTS) 
 	rm -rf *.o                               
+	rm -rf pieces/*.o
 	@echo ''
 	@echo 'Finished building target $@'
 

@@ -14,9 +14,18 @@ TEST(test_knight_no_moves)
     rv = move_init(&node);
     node->board[FILE_3][COL_A] = PAWN_W;
     node->board[FILE_3][COL_C] = PAWN_W;
+    node->board[FILE_6][COL_A] = PAWN_B;
+    node->board[FILE_6][COL_C] = PAWN_B;
 
     square knight = {FILE_1, COL_B};
     rv = get_knight_moves(node, knight); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 1);
+    
+    node->turn = BLACK;
+    square knight_b = {FILE_8, COL_B};
+    rv = get_knight_moves(node, knight_b); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(count, 1);
@@ -37,7 +46,7 @@ TEST(test_knight_moves_right_up)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {KNIGHT_B, 0, 0, 0, 0, 0, 0, 0}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -46,6 +55,13 @@ TEST(test_knight_moves_right_up)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(3, count);
+    
+    node->turn = BLACK;
+    square knight_b = {FILE_8, COL_A};
+    rv = get_knight_moves(node, knight_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 5);
 }
 
 TEST(test_knight_moves_right_down)
@@ -56,7 +72,7 @@ TEST(test_knight_moves_right_down)
     rv = move_init(&node);
 
     Board board = {
-        {0, 0, 0, 0, 0, 0, 0, 0},
+        {KNIGHT_B, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -72,6 +88,13 @@ TEST(test_knight_moves_right_down)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(3, count);
+    
+    node->turn = BLACK;
+    square knight_b = {FILE_1, COL_A};
+    rv = get_knight_moves(node, knight_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 5);
 }
 
 TEST(test_knight_moves_left_up)
@@ -89,7 +112,7 @@ TEST(test_knight_moves_left_up)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, 0, 0, 0, 0, 0, KNIGHT_B}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -98,6 +121,13 @@ TEST(test_knight_moves_left_up)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(3, count);
+    
+    node->turn = BLACK;
+    square knight_b = {FILE_8, COL_H};
+    rv = get_knight_moves(node, knight_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 5);
 }
 
 TEST(test_knight_moves_left_down)
@@ -108,7 +138,7 @@ TEST(test_knight_moves_left_down)
     rv = move_init(&node);
 
     Board board = {
-        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, KNIGHT_B},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -124,6 +154,13 @@ TEST(test_knight_moves_left_down)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(3, count);
+    
+    node->turn = BLACK;
+    square knight_b = {FILE_1, COL_H};
+    rv = get_knight_moves(node, knight_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 5);
 }
 
 TEST(test_knight_takes)
@@ -136,11 +173,11 @@ TEST(test_knight_takes)
     Board board = {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, PAWN_B, 0, PAWN_B, 0, 0, 0},
-        {0, PAWN_B, 0, 0, 0, PAWN_B, 0, 0},
-        {0, 0, 0, KNIGHT_W, 0, 0, 0, 0},
-        {0, PAWN_B, 0, 0, 0, PAWN_B, 0, 0},
-        {0, 0, PAWN_B, 0, PAWN_B, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, PAWN_B, PAWN_W, 0, PAWN_W, PAWN_B, 0, 0},
+        {0, PAWN_W, 0, KNIGHT_W, 0, PAWN_W, 0, 0},
+        {0, PAWN_B, 0, KNIGHT_B, 0, PAWN_B, 0, 0},
+        {0, PAWN_W, PAWN_B, 0, PAWN_B, PAWN_W, 0, 0},
+        {0, 0, PAWN_W, 0, PAWN_W, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0}
     };
 
@@ -150,5 +187,12 @@ TEST(test_knight_takes)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(9, count);
+    
+    node->turn = BLACK;
+    square knight_b = {FILE_5, COL_D};
+    rv = get_knight_moves(node, knight_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 17);
 }
 

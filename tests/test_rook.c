@@ -18,6 +18,13 @@ TEST(test_rook_no_moves)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(count, 1);
+    
+    node->turn = BLACK;
+    square rook_b = {FILE_8, COL_A};
+    rv = get_rook_moves(node, rook_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 1);
 }
 
 TEST(test_rook_moves_right)
@@ -34,8 +41,8 @@ TEST(test_rook_moves_right)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {PAWN_B, 0, 0, 0, 0, 0, 0, 0},
+        {ROOK_B, 0, 0, 0, 0, 0, 0, 0}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -44,6 +51,13 @@ TEST(test_rook_moves_right)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(8, count);
+    
+    node->turn = BLACK;
+    square rook_b = {FILE_8, COL_A};
+    rv = get_rook_moves(node, rook_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 15);
 }
 
 TEST(test_rook_moves_left)
@@ -60,8 +74,8 @@ TEST(test_rook_moves_left)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, 0, 0, 0, 0, 0, PAWN_B},
+        {0, 0, 0, 0, 0, 0, 0, ROOK_B}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -70,6 +84,13 @@ TEST(test_rook_moves_left)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(8, count);
+    
+    node->turn = BLACK;
+    square rook_b = {FILE_8, COL_H};
+    rv = get_rook_moves(node, rook_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 15);
 }
 
 TEST(test_rook_moves_up)
@@ -87,7 +108,7 @@ TEST(test_rook_moves_up)
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, 0, 0, 0, 0, PAWN_B, ROOK_B}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -96,6 +117,13 @@ TEST(test_rook_moves_up)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(8, count);
+    
+    node->turn = BLACK;
+    square rook_b = {FILE_8, COL_H};
+    rv = get_rook_moves(node, rook_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 15);
 }
 
 TEST(test_rook_moves_down)
@@ -106,7 +134,7 @@ TEST(test_rook_moves_down)
     rv = move_init(&node);
 
     Board board = {
-        {0, 0, 0, 0, 0, 0, 0, 0},
+        {ROOK_B, PAWN_B, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -122,6 +150,13 @@ TEST(test_rook_moves_down)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(8, count);
+    
+    node->turn = BLACK;
+    square rook_b = {FILE_1, COL_A};
+    rv = get_rook_moves(node, rook_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 15);
 }
 
 TEST(test_rook_takes)
@@ -137,9 +172,9 @@ TEST(test_rook_takes)
         {0, PAWN_B, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0}
+        {0, 0, 0, 0, 0, 0, PAWN_W, 0},
+        {0, 0, 0, 0, 0, PAWN_W, ROOK_B, PAWN_W},
+        {0, 0, 0, 0, 0, 0, PAWN_W, 0}
     };
 
     memcpy(node->board, board, sizeof(Board));
@@ -148,4 +183,11 @@ TEST(test_rook_takes)
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
     assertEquals(5, count);
+    
+    node->turn = BLACK;
+    square rook_b = {FILE_7, COL_G};
+    rv = get_rook_moves(node, rook_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(count, 9);
 }
