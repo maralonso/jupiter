@@ -20,7 +20,7 @@ typedef retval_t (*Eval_Whith_Rotation)(
         uint8_t col);
 
 
-inline retval_t EVAL_ROTATE_0(Node_t *node, square sq, Eval_Whith_Rotation func)
+inline retval_t EXEC_ROTATE_0(Node_t *node, square sq, Eval_Whith_Rotation func)
 {
     retval_t rv;
 
@@ -33,7 +33,7 @@ inline retval_t EVAL_ROTATE_0(Node_t *node, square sq, Eval_Whith_Rotation func)
     return RV_SUCCESS;
 }
 
-inline retval_t EVAL_ROTATE_90(Node_t *node, square sq, Eval_Whith_Rotation func)
+inline retval_t EXEC_ROTATE_90(Node_t *node, square sq, Eval_Whith_Rotation func)
 {
     retval_t rv;
 
@@ -46,7 +46,7 @@ inline retval_t EVAL_ROTATE_90(Node_t *node, square sq, Eval_Whith_Rotation func
     return RV_SUCCESS;
 }
 
-inline retval_t EVAL_ROTATE_180(Node_t *node, square sq, Eval_Whith_Rotation func)
+inline retval_t EXEC_ROTATE_180(Node_t *node, square sq, Eval_Whith_Rotation func)
 {
     retval_t rv;
 
@@ -59,7 +59,7 @@ inline retval_t EVAL_ROTATE_180(Node_t *node, square sq, Eval_Whith_Rotation fun
     return RV_SUCCESS;
 }
 
-inline retval_t EVAL_ROTATE_270(Node_t *node, square sq, Eval_Whith_Rotation func)
+inline retval_t EXEC_ROTATE_270(Node_t *node, square sq, Eval_Whith_Rotation func)
 {
     retval_t rv;
 
@@ -76,16 +76,16 @@ inline retval_t exec_with_rotation(Node_t *node, square sq,
                               uint8_t rotation, void *func)
 {
     if (rotation & ROTATION_0) {
-        EVAL_ROTATE_0(node, sq, func);
+        EXEC_ROTATE_0(node, sq, func);
     }
     if (rotation & ROTATION_90) {
-        EVAL_ROTATE_90(node, sq, func);
+        EXEC_ROTATE_90(node, sq, func);
     }
     if (rotation & ROTATION_180) {
-        EVAL_ROTATE_180(node, sq, func);
+        EXEC_ROTATE_180(node, sq, func);
     }
     if (rotation & ROTATION_270) {
-        EVAL_ROTATE_270(node, sq, func);
+        EXEC_ROTATE_270(node, sq, func);
     }
 
     return RV_SUCCESS;

@@ -37,7 +37,7 @@ TEST(test_rotate_0)
 
     call_count = 0;
     square sq = {FILE_1, COL_A};
-    EVAL_ROTATE_0(node, sq, testing_eval);
+    EXEC_ROTATE_0(node, sq, testing_eval);
     assertEquals(56, call_count);
 }
 
@@ -62,7 +62,7 @@ TEST(test_rotate_90)
 
     call_count = 0;
     square sq = {FILE_8, COL_A};
-    EVAL_ROTATE_90(node, sq, testing_eval);
+    EXEC_ROTATE_90(node, sq, testing_eval);
     assertEquals(56, call_count);
 }
 
@@ -88,7 +88,7 @@ TEST(test_rotate_180)
 
     call_count = 0;
     square sq = {FILE_8, COL_H};
-    EVAL_ROTATE_180(node, sq, testing_eval);
+    EXEC_ROTATE_180(node, sq, testing_eval);
     assertEquals(56, call_count);
 }
 
@@ -113,6 +113,6 @@ TEST(test_rotate_270)
 
     call_count = 0;
     square sq = {FILE_1, COL_H};
-    EVAL_ROTATE_270(node, sq, testing_eval);
+    EXEC_ROTATE_270(node, sq, testing_eval);
     assertEquals(56, call_count);
 }
