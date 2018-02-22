@@ -5,9 +5,11 @@
 #include "test_knight.h"
 #include "test_king.h"
 #include "test_pawn.h"
+#include "test_node.h"
 #include "cu/cu.h"
 
 TEST_SUITES {
+      TEST_SUITE_ADD(node), 
       TEST_SUITE_ADD(generation), 
       TEST_SUITE_ADD(pieces), 
       TEST_SUITE_ADD(rook_moves), 
