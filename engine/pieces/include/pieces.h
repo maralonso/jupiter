@@ -1,6 +1,7 @@
 #include "board.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #define ROTATION_0     (1 << 0)
 #define ROTATION_90    (1 << 1)
@@ -12,6 +13,10 @@ retval_t get_bishop_moves(Node_t *node, square sq);
 retval_t get_knight_moves(Node_t *node, square sq);
 retval_t get_king_moves(Node_t *node, square sq);
 retval_t get_pawn_moves(Node_t *node, square sq);
+bool pawn_attak_square(Node_t *node, square from, square to);
+bool rook_attak_square(Node_t *node, square from, square to);
+bool bishop_attak_square(Node_t *node, square from, square to);
+bool knight_attak_square(Node_t *node, square from, square to);
 
 typedef retval_t (*Eval_Whith_Rotation)(
         Node_t *node, 

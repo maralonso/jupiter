@@ -191,3 +191,48 @@ TEST(test_bishop_takes)
     count = get_tree_count(node);
     assertEquals(9, count);
 }
+
+TEST(test_bishop_attak_square)
+{
+    Node_t *node;
+    move_init(&node);
+
+    Board board = {
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, BISHOP_W, 0, 0, 0, 0, PAWN_W, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, BISHOP_B, 0, 0, 0, 0, PAWN_B, 0},
+        {0, 0, 0, 0, 0, 0, 0,0}
+    };
+
+    memcpy(node->board, board, sizeof(Board));
+    square bishop = {FILE_2, COL_B};
+    square sq1 = {FILE_7, COL_G};
+    square sq2 = {FILE_6, COL_F};
+    square sq3 = {FILE_8, COL_H};
+    square sq4 = {FILE_3, COL_D};
+    square sq5 = {FILE_4, COL_B};
+    assertTrue(bishop_attak_square(node, bishop,sq1)); 
+    assertTrue(bishop_attak_square(node, bishop,sq2)); 
+    assertFalse(bishop_attak_square(node, bishop, sq3));
+    assertFalse(bishop_attak_square(node, bishop, sq4));
+    assertFalse(bishop_attak_square(node, bishop, sq5));
+
+    node->turn = BLACK;
+    square bishop_b = {FILE_7, COL_B};
+    square sq6 = {FILE_2, COL_G};
+    square sq7 = {FILE_3, COL_F};
+    square sq8 = {FILE_1, COL_H};
+    square sq9 = {FILE_6, COL_D};
+    square sq10 = {FILE_5, COL_B};
+    assertTrue(bishop_attak_square(node, bishop_b,sq6)); 
+    assertTrue(bishop_attak_square(node, bishop_b,sq7)); 
+    assertFalse(bishop_attak_square(node, bishop_b, sq8));
+    assertFalse(bishop_attak_square(node, bishop_b, sq9));
+    assertFalse(bishop_attak_square(node, bishop_b, sq10));
+}
+
+

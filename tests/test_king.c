@@ -192,3 +192,135 @@ TEST(test_king_takes)
     assertEquals(count, 17);
 }
 
+TEST(test_king_short_castles)
+{
+    Node_t *node;
+    retval_t rv;
+    uint32_t count;
+    rv = move_init(&node);
+
+    Board board = {
+        {0, 0, 0, QUEEN_W, KING_W, 0, 0, ROOK_W},
+        {0, 0, 0, PAWN_W, PAWN_W, PAWN_W, PAWN_W, PAWN_W},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, PAWN_B, PAWN_B, PAWN_B, PAWN_B, PAWN_B},
+        {0, 0, 0, QUEEN_B, KING_B, 0, 0, ROOK_B}
+    };
+
+    memcpy(node->board, board, sizeof(Board));
+    square king = {FILE_1, COL_E};
+    rv = get_king_moves(node, king); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(3, count);
+   
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_E};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(5, count);
+}
+
+TEST(test_king_long_castles)
+{
+    Node_t *node;
+    retval_t rv;
+    uint32_t count;
+    rv = move_init(&node);
+
+    Board board = {
+        {ROOK_W, 0, 0, 0, KING_W, BISHOP_W, 0, 0},
+        {PAWN_W, 0, 0, PAWN_W, PAWN_W, PAWN_W,0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {PAWN_B, 0, 0, PAWN_B, PAWN_B, PAWN_B, 0, 0},
+        {ROOK_B, 0, 0, 0, KING_B, BISHOP_B, 0,0}
+    };
+
+    memcpy(node->board, board, sizeof(Board));
+    square king = {FILE_1, COL_E};
+    rv = get_king_moves(node, king); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(3, count);
+   
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_E};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(5, count);
+}
+
+TEST(test_king_no_castles)
+{
+    Node_t *node;
+    retval_t rv;
+    uint32_t count;
+    rv = move_init(&node);
+
+    Board board = {
+        {ROOK_W, 0, 0, 0, KING_W, BISHOP_W, 0, 0},
+        {PAWN_W, 0, 0, PAWN_W, PAWN_W, PAWN_W,0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {PAWN_B, 0, 0, PAWN_B, PAWN_B, PAWN_B, 0, 0},
+        {ROOK_B, 0, 0, 0, KING_B, BISHOP_B, 0,0}
+    };
+
+    memcpy(node->board, board, sizeof(Board));
+    node->castles = 0;
+    square king = {FILE_1, COL_E};
+    rv = get_king_moves(node, king); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(2, count);
+   
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_E};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(3, count);
+}
+
+TEST(test_king_no_castles2)
+{
+    Node_t *node;
+    retval_t rv;
+    uint32_t count;
+    rv = move_init(&node);
+
+    Board board = {
+        {ROOK_W, 0, 0, 0, KING_W, BISHOP_W, 0, 0},
+        {PAWN_W, 0, 0, PAWN_W, PAWN_W, PAWN_W,0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {BISHOP_W, 0, ROOK_B, 0, 0, 0, 0, 0},
+        {PAWN_B, 0, 0, PAWN_B, PAWN_B, PAWN_B, 0, 0},
+        {ROOK_B, 0, 0, 0, KING_B, BISHOP_B, 0,0}
+    };
+
+    memcpy(node->board, board, sizeof(Board));
+    square king = {FILE_1, COL_E};
+    rv = get_king_moves(node, king); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(2, count);
+   
+    node->turn = BLACK;
+    square king_b = {FILE_8, COL_E};
+    rv = get_king_moves(node, king_b); 
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(3, count);
+}

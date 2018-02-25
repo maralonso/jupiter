@@ -162,3 +162,47 @@ TEST(test_pawn_promote)
     count = get_tree_count(node);
     assertEquals(19, count);
 }
+
+TEST(test_pawn_attak_square)
+{
+    Node_t *node;
+    move_init(&node);
+
+    Board board = {
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, PAWN_W, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0},
+        {0, PAWN_B, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0,0}
+    };
+
+    memcpy(node->board, board, sizeof(Board));
+    node->turn = BLACK;
+    square pawn = {FILE_2, COL_B};
+    square sq1 = {FILE_3, COL_A};
+    square sq2 = {FILE_3, COL_C};
+    square sq3 = {FILE_3, COL_B};
+    square sq4 = {FILE_3, COL_D};
+    square sq5 = {FILE_4, COL_B};
+    assertTrue(pawn_attak_square(node, pawn,sq1)); 
+    assertTrue(pawn_attak_square(node, pawn,sq2)); 
+    assertFalse(pawn_attak_square(node, pawn, sq3));
+    assertFalse(pawn_attak_square(node, pawn, sq4));
+    assertFalse(pawn_attak_square(node, pawn, sq5));
+
+    node->turn = WHITE;
+    square pawn_b = {FILE_7, COL_B};
+    square sq6 = {FILE_6, COL_A};
+    square sq7 = {FILE_6, COL_C};
+    square sq8 = {FILE_6, COL_B};
+    square sq9 = {FILE_6, COL_D};
+    square sq10 = {FILE_5, COL_B};
+    assertTrue(pawn_attak_square(node, pawn_b,sq6)); 
+    assertTrue(pawn_attak_square(node, pawn_b,sq7)); 
+    assertFalse(pawn_attak_square(node, pawn_b, sq8));
+    assertFalse(pawn_attak_square(node, pawn_b, sq9));
+    assertFalse(pawn_attak_square(node, pawn_b, sq10));
+}

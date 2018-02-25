@@ -79,3 +79,13 @@ retval_t get_pawn_moves(Node_t *node, square sq)
         return exec_with_rotation(node, sq, rotation, pawn_moves);
     }
 }
+
+bool pawn_attak_square(Node_t *node, square from, square to)
+{
+    if (from[0] == (to[0] + node->turn) &&
+        abs(from[1] - to[1]) == 1) {
+        return true;
+    }
+
+    return false;
+}

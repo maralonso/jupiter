@@ -40,38 +40,34 @@
 #define	QUEEN			900
 #define	KING			20000
 
-#define	PAWN_B			(PAWN * BLACK)
+#define	PAWN_B			(PAWN   * BLACK)
 #define	KNIGHT_B		(KNIGHT * BLACK)
 #define	BISHOP_B		(BISHOP * BLACK)
-#define	ROOK_B			(ROOK * BLACK)
-#define	QUEEN_B			(QUEEN * BLACK)
-#define	KING_B			(KING * BLACK)
+#define	ROOK_B			(ROOK   * BLACK)
+#define	QUEEN_B			(QUEEN  * BLACK)
+#define	KING_B			(KING   * BLACK)
 
-#define	PAWN_W			(PAWN * WHITE)
+#define	PAWN_W			(PAWN   * WHITE)
 #define	KNIGHT_W		(KNIGHT * WHITE)
 #define	BISHOP_W		(BISHOP * WHITE)
-#define	ROOK_W			(ROOK * WHITE)
-#define	QUEEN_W			(QUEEN * WHITE)
-#define	KING_W			(KING * WHITE)
+#define	ROOK_W			(ROOK   * WHITE)
+#define	QUEEN_W			(QUEEN  * WHITE)
+#define	KING_W			(KING   * WHITE)
 
-
-/**
- * Special Moves
- **/
-#define SHORT_CASTLE				10
-#define LONG_CASTLE   				100
-#define PROMOTION					50
-
-#define W_SHORT_CASTLE_BIT			0X01
-#define W_LONG_CASTLE_BIT   		0X02
-#define B_SHORT_CASTLE_BIT			0X04
-#define B_LONG_CASTLE_BIT   		0X08
+#define W_SHORT_CASTLE			0X01
+#define W_LONG_CASTLE   		0X02
+#define B_SHORT_CASTLE			0X04
+#define B_LONG_CASTLE   		0X08
+#define W_CASTLES       (W_LONG_CASTLE | W_SHORT_CASTLE)
+#define B_CASTLES       (B_LONG_CASTLE | B_SHORT_CASTLE)
+#define SHORT_CASTLES   (W_SHORT_CASTLE | B_SHORT_CASTLE)
+#define LONG_CASTLES    (W_LONG_CASTLE | B_LONG_CASTLE)
 
 #define ALL_CASTLES ( \
-        W_SHORT_CASTLE_BIT | \
-        W_LONG_CASTLE_BIT  | \
-        B_SHORT_CASTLE_BIT | \
-        B_LONG_CASTLE_BIT )
+        W_SHORT_CASTLE | \
+        W_LONG_CASTLE  | \
+        B_SHORT_CASTLE | \
+        B_LONG_CASTLE )
 
 #define TURN(x,y)	((x[y[0]][y[1]] > 0) ? WHITE: BLACK)
 
@@ -129,13 +125,13 @@ typedef struct Node Node_t;
 /**
  *
  **/
-typedef retval_t (*Evaluation_Function) (Node_t *node, uint8_t rank, uint8_t file);
-inline retval_t EVALUATE_BOARD(Node_t *node, Evaluation_Function func)
+typedef retval_t (*Walk_Function) (Node_t *node, uint8_t rank, uint8_t file, square to);
+inline retval_t WALK_BOARD(Node_t *node, Walk_Function func, square to)
 {
     retval_t rv;
     for(int i = FILE_1; i <= FILE_8; i++) {
         for(int j = COL_A; j <= COL_H; j++) {
-            rv = func(node, i , j);
+            rv = func(node, i , j, to);
             SUCCES_OR_RETURN(rv);
         }
     }

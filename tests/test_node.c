@@ -40,7 +40,6 @@ TEST(test_insert_node)
 TEST(test_delete_node)
 {
     Node_t *node, *new, *new1, *new2;
-    retval_t rv;
     uint32_t count;
    
     move_init(&node);
@@ -54,11 +53,11 @@ TEST(test_delete_node)
     count = get_tree_count(node);
     assertEquals(count, 4);
 
-    rv = delete_node(new);
+    delete_node(new);
     count = get_tree_count(node);
     assertEquals(count, 2);
 
-    rv = delete_node(new1);
+    delete_node(new1);
     count = get_tree_count(node);
     assertEquals(count, 1);
 }
