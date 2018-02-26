@@ -1,2 +1,2 @@
-# chessengine
-A toally useless chess engine
+# Jupiter
+A totally useless chess engine

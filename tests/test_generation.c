@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "node.h"
 #include <string.h>
+#include <stdio.h>
 
 
 TEST(test_move_init)
@@ -187,4 +188,23 @@ TEST(test_clear_castles)
     assertEquals(rv, RV_SUCCESS);
     assertEquals(node->child->castles, (ALL_CASTLES & (~B_CASTLES)));
     delete_node(node->child);
+}
+
+TEST(test_gen_moves)
+{
+    uint32_t count;
+    Node_t *node;
+    retval_t rv;
+    rv = move_init(&node);
+    assertEquals(rv, RV_SUCCESS);
+
+    rv = get_moves(node);
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(21, count);
+    
+    rv = get_moves(node->child);
+    assertEquals(rv, RV_SUCCESS);
+    count = get_tree_count(node);
+    assertEquals(41, count);
 }

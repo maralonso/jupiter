@@ -1,4 +1,4 @@
-EXEC    = engine-tests
+EXEC    = jupitests
 
 CFLAGS  = -c -g -Wall -std=c99
 LDFLAGS = -L../engine -lchessengine

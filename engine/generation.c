@@ -33,24 +33,32 @@ static Node_t* create_move(void)
 
 static retval_t get_piece_moves(Node_t *node, uint8_t rank, uint8_t file, square to)
 {
-    switch(node->board[rank][file] * node->turn) {
+    retval_t rv = RV_SUCCESS;
+    square from = {file, rank};
+    switch(node->board[file][rank] * node->turn) {
         case PAWN:
+            rv = get_pawn_moves(node, from);
             break;
         case ROOK:
+            rv = get_rook_moves(node, from);
             break;
         case KNIGHT:
+            rv = get_knight_moves(node, from);
             break;
         case BISHOP:
+            rv = get_bishop_moves(node, from);
             break;
         case QUEEN:
+            rv = get_queen_moves(node, from);
             break;
         case KING:
+            rv = get_king_moves(node, from);
             break;
         default:
             break;
     }
 
-    return RV_SUCCESS;
+    return rv;
 }
 
 static retval_t check_square_safe(Node_t *node, uint8_t rank, uint8_t file, square to)
@@ -72,9 +80,7 @@ static retval_t check_square_safe(Node_t *node, uint8_t rank, uint8_t file, squa
             attaked = bishop_attak_square(node, from, to);
             break;
         case QUEEN:
-            attaked = rook_attak_square(node, from, to) |
-                      bishop_attak_square(node, from, to);
-                      
+            attaked = queen_attak_square(node, from, to); 
             break;
         default:
             attaked = false;

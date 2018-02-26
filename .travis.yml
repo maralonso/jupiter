@@ -9,4 +9,4 @@ os:
 script:
     - make -C tests/cu
     - make -C tests/
-    - tests/engine-tests  
+    - tests/jupitests  
