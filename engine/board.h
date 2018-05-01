@@ -109,6 +109,8 @@ struct Node {
 	char notation[10];
 	int value;
 
+    uint8_t moves;
+    uint8_t half_moves;
 	int8_t  turn;
 	check_status_t  check_status;
 
