@@ -150,7 +150,7 @@ retval_t move_init(Node_t **node)
     new_node->turn          = WHITE;
     new_node->check_status  = NOT_CHECK;
     new_node->castles       = ALL_CASTLES;
-    new_node->passant       = 0;
+    new_node->passant       = NO_PASSANT;
 
     new_node->child         = NULL;
     new_node->next          = NULL;
