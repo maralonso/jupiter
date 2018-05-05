@@ -6,6 +6,7 @@
 #include "test_king.h"
 #include "test_pawn.h"
 #include "test_node.h"
+#include "test_fen.h"
 #include "cu/cu.h"
 
 TEST_SUITES {
@@ -17,6 +18,7 @@ TEST_SUITES {
       TEST_SUITE_ADD(knight_moves), 
       TEST_SUITE_ADD(king_moves), 
       TEST_SUITE_ADD(pawn_moves),
+      TEST_SUITE_ADD(fen_utils),
       TEST_SUITES_CLOSURE
 };
 

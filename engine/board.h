@@ -71,6 +71,8 @@
 
 #define TURN(x,y)	((x[y[0]][y[1]] > 0) ? WHITE: BLACK)
 
+/* No passant moves */
+#define NO_PASSANT  0x7F
 
 typedef int8_t  square[2];
 typedef int16_t  Board[8][8];
@@ -109,6 +111,8 @@ struct Node {
 	char notation[10];
 	int value;
 
+    uint8_t moves;
+    uint8_t half_moves;
 	int8_t  turn;
 	check_status_t  check_status;
 
