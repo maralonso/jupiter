@@ -26,14 +26,14 @@ retval_t get_bishop_moves(Node_t *node, square sq)
     return exec_with_rotation(node, sq, rotation, bishop_moves); 
 }
 
-bool bishop_attak_square(Node_t *node, square from, square to)
+bool bishop_attak_square(Board board, square from, square to)
 {
     if (abs(from[0] - to[0]) == abs(from[1] - to[1])) {
         int8_t file_step = (to[0] - from[0]) > 0 ? 1: -1;
         int8_t rank_step = (to[1] - from[1]) > 0 ? 1: -1;
         for (int8_t i = from[0] + file_step, j = from[1] + rank_step;
              i != to[0] && j != to[1]; i += file_step, j += rank_step) {
-            if (node->board[i][j] != 0) {
+            if (board[i][j] != 0) {
                 return false;
             }
         }   

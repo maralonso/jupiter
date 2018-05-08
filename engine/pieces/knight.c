@@ -23,7 +23,7 @@ retval_t get_knight_moves(Node_t *node, square sq)
     return exec_with_rotation(node, sq, rotation, knight_moves); 
 }
 
-bool knight_attak_square(Node_t *node, square from, square to)
+bool knight_attak_square(Board board,  square from, square to)
 {
     if ((abs(from[0] - to[0]) == 1 && abs(from[1] - to[1]) == 2) ||
         (abs(from[0] - to[0]) == 2 && abs(from[1] - to[1]) == 1)) {

@@ -81,9 +81,11 @@ retval_t get_pawn_moves(Node_t *node, square sq)
     }
 }
 
-bool pawn_attak_square(Node_t *node, square from, square to)
+bool pawn_attak_square(Board board, square from, square to)
 {
-    if (from[0] == (to[0] + node->turn) &&
+    int8_t turn = TURN(board, from[0], from[1]);
+
+    if (from[0] == (to[0] + turn) &&
         abs(from[1] - to[1]) == 1) {
         return true;
     }
@@ -148,6 +150,7 @@ static bool doubled_pawn(Board board, uint8_t file, uint8_t rank)
 int32_t pawn_evaluation(Board board, uint8_t file, uint8_t rank)
 {
     int32_t evaluation = 0;
+    int8_t turn = TURN(board, file, rank);
 
     if (isolated_pawn(board, file, rank)) {
         evaluation -= ISOLATED_PAWN_POND;
@@ -161,5 +164,5 @@ int32_t pawn_evaluation(Board board, uint8_t file, uint8_t rank)
         evaluation += PASSED_PAWN_POND;
     }
 
-    return evaluation;
+    return evaluation * turn;
 }
