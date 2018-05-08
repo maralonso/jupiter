@@ -2,6 +2,7 @@
 #include "board.h"
 #include "pieces.h"
 #include "generation.h"
+#include "evaluation.h"
 
 static retval_t pawn_takes(Node_t *node, square sq, uint8_t file, uint8_t col)
 {
@@ -88,4 +89,77 @@ bool pawn_attak_square(Node_t *node, square from, square to)
     }
 
     return false;
+}
+
+static bool isolated_pawn(Board board, uint8_t file, uint8_t rank)
+{
+    int8_t pawn = board[file][rank];
+
+    for (int i = FILE_2; i < FILE_8; i++) {
+        if (rank > COL_A) {
+            if (board[i][rank - 1] == pawn) {
+                return false;
+            }
+        }
+        if (rank < COL_H) {
+            if (board[i][rank + 1] == pawn) {
+                return false;
+            }
+        } 
+    }
+
+    return true;                 
+}
+
+static bool passed_pawn(Board board, uint8_t file, uint8_t rank)
+{
+    int8_t step = board[file][rank];
+    int8_t pawn = board[file][rank] * -1;
+
+    for (int i = file; i < FILE_8 && i > FILE_1; i += step) {
+        if (rank > COL_A) {
+            if (board[i][rank - 1] == pawn) {
+                return false;
+            }
+        }
+        if (rank < COL_H) {
+            if (board[i][rank + 1] == pawn) {
+                return false;
+            }
+        } 
+    }
+
+    return true;                 
+}
+
+static bool doubled_pawn(Board board, uint8_t file, uint8_t rank)
+{
+    int8_t pawn = board[file][rank];
+
+    for (int i = FILE_2; i < FILE_8; i++) {
+        if (board[i][rank] == pawn && i != file) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int32_t pawn_evaluation(Board board, uint8_t file, uint8_t rank)
+{
+    int32_t evaluation = 0;
+
+    if (isolated_pawn(board, file, rank)) {
+        evaluation -= ISOLATED_PAWN_POND;
+    }
+
+    if (doubled_pawn(board, file, rank)) {
+        evaluation -= DOUBLED_PAWN_POND;
+    }
+
+    if (passed_pawn(board, file, rank)) {
+        evaluation += PASSED_PAWN_POND;
+    }
+
+    return evaluation;
 }

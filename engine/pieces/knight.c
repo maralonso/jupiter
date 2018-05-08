@@ -32,3 +32,9 @@ bool knight_attak_square(Node_t *node, square from, square to)
 
     return false;
 }
+
+int32_t knight_evaluation(Board board, uint8_t file, uint8_t rank)
+{
+    //TODO
+    return 0;
+}

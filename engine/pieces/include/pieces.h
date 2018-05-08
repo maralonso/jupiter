@@ -20,6 +20,13 @@ bool bishop_attak_square(Node_t *node, square from, square to);
 bool knight_attak_square(Node_t *node, square from, square to);
 bool queen_attak_square(Node_t *node, square from, square to);
 
+int32_t pawn_evaluation(Board board, uint8_t file, uint8_t rank);
+int32_t rook_evaluation(Board board, uint8_t file, uint8_t rank);
+int32_t knight_evaluation(Board board, uint8_t file, uint8_t rank);
+int32_t bishop_evaluation(Board board, uint8_t file, uint8_t rank);
+int32_t queen_evaluation(Board board, uint8_t file, uint8_t rank);
+int32_t king_evaluation(Board board, uint8_t file, uint8_t rank);
+
 typedef retval_t (*Eval_Whith_Rotation)(
         Node_t *node, 
         square sq, 

@@ -17,3 +17,9 @@ bool queen_attak_square(Node_t *node, square from, square to)
 {
     return rook_attak_square(node, from, to) | bishop_attak_square(node, from, to);
 }
+
+int32_t queen_evaluation(Board board, uint8_t file, uint8_t rank)
+{
+    //TODO
+    return 0;
+}
