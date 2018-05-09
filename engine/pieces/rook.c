@@ -71,9 +71,9 @@ static bool connected_rooks(Board board, uint8_t file, uint8_t rank)
     return false;
 }
 
-static int8_t available_rook_moves(Board board, uint8_t file, uint8_t rank)
+static uint8_t available_rook_moves(Board board, uint8_t file, uint8_t rank)
 {
-    int8_t count = 0;
+    uint8_t count = 0;
     square from = {file, rank};
 
     for (int i = FILE_1; i < FILE_8; i++) {
