@@ -13,6 +13,16 @@
 #define BISHOP_X_RAY_POND           30
 #define KNIGHT_SUPOORTED_POND       30
 
+#define CENTER_CONTROL_POND         5
+#define CENTER_CONTROL_C4_POND      5
+#define CENTER_CONTROL_C5_POND      5
+#define CENTER_CONTROL_F4_POND      5
+#define CENTER_CONTROL_F5_POND      5
+#define CENTER_CONTROL_D4_POND      10
+#define CENTER_CONTROL_D5_POND      10
+#define CENTER_CONTROL_E4_POND      10
+#define CENTER_CONTROL_E5_POND      10
+
 int evaluate(Board board);
 
 #endif
