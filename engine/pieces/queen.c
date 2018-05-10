@@ -2,6 +2,7 @@
 #include "board.h"
 #include "pieces.h"
 #include "generation.h"
+#include "evaluation.h"
 
 retval_t get_queen_moves(Node_t *node, square sq)
 {
@@ -20,6 +21,10 @@ bool queen_attak_square(Board board, square from, square to)
 
 int32_t queen_evaluation(Board board, uint8_t file, uint8_t rank)
 {
-    //TODO
-    return 0;
+    int32_t eval = 0;
+
+    eval += rook_evaluation(board, file, rank);
+    eval += bishop_evaluation(board, file, rank);
+
+    return eval;
 }
