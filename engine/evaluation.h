@@ -23,6 +23,6 @@
 #define CENTER_CONTROL_E4_POND      10
 #define CENTER_CONTROL_E5_POND      10
 
-int evaluate(Board board);
+int32_t evaluate(Board board);
 
 #endif

@@ -198,9 +198,6 @@ TEST(test_knight_takes)
 
 TEST(test_knight_attak_square)
 {
-    Node_t *node;
-    move_init(&node);
-
     Board board = {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0},
@@ -212,29 +209,27 @@ TEST(test_knight_attak_square)
         {0, 0, 0, 0, 0, 0, 0,0}
     };
 
-    memcpy(node->board, board, sizeof(Board));
     square knight = {FILE_3, COL_C};
     square sq1 = {FILE_4, COL_E};
     square sq2 = {FILE_5, COL_D};
     square sq3 = {FILE_7, COL_G};
     square sq4 = {FILE_3, COL_D};
     square sq5 = {FILE_4, COL_B};
-    assertTrue(knight_attak_square(node, knight,sq1)); 
-    assertTrue(knight_attak_square(node, knight,sq2)); 
-    assertFalse(knight_attak_square(node, knight, sq3));
-    assertFalse(knight_attak_square(node, knight, sq4));
-    assertFalse(knight_attak_square(node, knight, sq5));
+    assertTrue(knight_attak_square(board, knight,sq1)); 
+    assertTrue(knight_attak_square(board, knight,sq2)); 
+    assertFalse(knight_attak_square(board, knight, sq3));
+    assertFalse(knight_attak_square(board, knight, sq4));
+    assertFalse(knight_attak_square(board, knight, sq5));
  
-    node->turn = BLACK;
     square knight_b = {FILE_6, COL_C};
     square sq6 = {FILE_5, COL_E};
     square sq7 = {FILE_4, COL_D};
     square sq8 = {FILE_6, COL_C};
     square sq9 = {FILE_6, COL_D};
     square sq10 = {FILE_5, COL_B};
-    assertTrue(knight_attak_square(node, knight_b,sq6)); 
-    assertTrue(knight_attak_square(node, knight_b,sq7)); 
-    assertFalse(knight_attak_square(node, knight_b, sq8));
-    assertFalse(knight_attak_square(node, knight_b, sq9));
-    assertFalse(knight_attak_square(node, knight_b, sq10));
+    assertTrue(knight_attak_square(board, knight_b,sq6)); 
+    assertTrue(knight_attak_square(board, knight_b,sq7)); 
+    assertFalse(knight_attak_square(board, knight_b, sq8));
+    assertFalse(knight_attak_square(board, knight_b, sq9));
+    assertFalse(knight_attak_square(board, knight_b, sq10));
 }

@@ -85,7 +85,7 @@ bool pawn_attak_square(Board board, square from, square to)
 {
     int8_t turn = TURN(board, from[0], from[1]);
 
-    if (from[0] == (to[0] + turn) &&
+    if (from[0] == (to[0] - turn) &&
         abs(from[1] - to[1]) == 1) {
         return true;
     }

@@ -142,7 +142,7 @@ static int32_t center_control(Board board)
     return control;
 }
 
-int evaluate(Board board)
+int32_t evaluate(Board board)
 {
     return (material_evaluation(board) +
             pieces_evaluation(board) +
