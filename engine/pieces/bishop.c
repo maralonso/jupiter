@@ -63,7 +63,7 @@ static bool supported_bishop(Board board, uint8_t file, uint8_t rank)
 {
     int8_t turn = TURN(board, file, rank);
 
-    if ((file - turn) < FILE_1 || (file - turn) > FILE_8) {
+    if ((file - turn) <= FILE_1 || (file - turn) >= FILE_8) {
         return false;
     }
 

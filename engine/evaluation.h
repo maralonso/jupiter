@@ -11,6 +11,7 @@
 #define ROOK_X_RAY_POND             30
 #define UNEXPULSABLE_BISHOP_POND    30
 #define BISHOP_X_RAY_POND           30
+#define KNIGHT_SUPOORTED_POND       30
 
 int evaluate(Board board);
 
