@@ -112,28 +112,28 @@ static int32_t center_control(Board board)
                 square from = {i, j};
                 turn = TURN(board, i, j);
 
-                if (piece_attack_square(board, from, c4))
+                if (piece_attack_square(board, from, c4)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, c5))
+                if (piece_attack_square(board, from, c5)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, d4))
+                if (piece_attack_square(board, from, d4)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, d5))
+                if (piece_attack_square(board, from, d5)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, e4))
+                if (piece_attack_square(board, from, e4)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, e5))
+                if (piece_attack_square(board, from, e5)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, f4))
+                if (piece_attack_square(board, from, f4)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
-                if (piece_attack_square(board, from, f5))
+                if (piece_attack_square(board, from, f5)) {
                     control += CENTER_CONTROL_C4_POND * turn;
                 }
             }
