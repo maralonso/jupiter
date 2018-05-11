@@ -29,6 +29,10 @@ retval_t get_bishop_moves(Node_t *node, square sq)
 
 bool bishop_attak_square(Board board, square from, square to)
 {
+    if (board[from[0]][from[1]] * board[to[0]][to[1]] > 0) {
+        return false;
+    }
+
     if (abs(from[0] - to[0]) == abs(from[1] - to[1])) {
         int8_t file_step = (to[0] - from[0]) > 0 ? 1: -1;
         int8_t rank_step = (to[1] - from[1]) > 0 ? 1: -1;
@@ -79,10 +83,10 @@ static uint8_t available_bishop_moves(Board board, uint8_t file, uint8_t  rank)
 {
     uint8_t count = 0;
     square from = {file, rank};
-    uint8_t start_file, start_rank;
+    int8_t start_file, start_rank;
 
     for (start_file = file, start_rank = rank;
-         start_file >= FILE_1 && start_rank >= COL_A;
+         start_file > FILE_1 && start_rank > COL_A;
          start_file--, start_rank--);
 
     for (int i = start_file, j = start_rank;
@@ -94,11 +98,11 @@ static uint8_t available_bishop_moves(Board board, uint8_t file, uint8_t  rank)
     }
             
     for (start_file = file, start_rank = rank;
-         start_file <= FILE_8 && start_rank >= COL_A;
+         start_file < FILE_8 && start_rank > COL_A;
          start_file++, start_rank--);
 
     for (int i = start_file, j = start_rank;
-         i >= FILE_8 && j <= COL_H;  i--, j++) {
+         i >= FILE_1 && j <= COL_H;  i--, j++) {
         square to = {i, j};
         if (bishop_attak_square(board, from, to)) {
             count++;
@@ -112,16 +116,16 @@ static bool x_ray(Board board, uint8_t file, uint8_t rank)
 {
     int8_t turn = TURN(board, file,rank);
     square from = {file, rank};
-    uint8_t start_file, start_rank;
+    int8_t start_file, start_rank;
 
     for (start_file = file, start_rank = rank;
-         start_file >= FILE_1 && start_rank >= COL_A;
+         start_file > FILE_1 && start_rank > COL_A;
          start_file--, start_rank--);
 
     for (int i = start_file, j = start_rank;
          i <= FILE_8 && j <= COL_H;  i++, j++) {
         square to = {i, j};
-        if ((board[i][j] == (QUEEN * turn) ||
+        if ((i != file) && (board[i][j] == (QUEEN * turn) ||
              board[i][j] == (KING * turn)) &&    
            (!bishop_attak_square(board, from, to))) {
             return true;
@@ -129,13 +133,13 @@ static bool x_ray(Board board, uint8_t file, uint8_t rank)
     }
             
     for (start_file = file, start_rank = rank;
-         start_file <= FILE_8 && start_rank >= COL_A;
+         start_file < FILE_8 && start_rank > COL_A;
          start_file++, start_rank--);
 
     for (int i = start_file, j = start_rank;
-         i >= FILE_8 && j <= COL_H;  i--, j++) {
+         i >= FILE_1 && j <= COL_H;  i--, j++) {
          square to = {i, j};
-         if ((board[i][j] == (QUEEN * turn) ||
+         if ((i != file) && (board[i][j] == (QUEEN * turn) ||
              board[i][j] == (KING * turn)) &&    
            (!bishop_attak_square(board, from, to))) {
             return true;
