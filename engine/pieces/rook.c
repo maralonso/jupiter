@@ -32,6 +32,10 @@ bool rook_attak_square(Board board, square from, square to)
     int8_t rank_step =0;
     int8_t file_step =0;
     
+    if (board[from[0]][from[1]] * board[to[0]][to[1]] > 0) {
+        return false;
+    }
+
     if ((from[0] == to[0] && from[1] != to[1]) ||
         (from[0] != to[0] && from[1] == to[1])) {
         
@@ -76,7 +80,7 @@ static uint8_t available_rook_moves(Board board, uint8_t file, uint8_t rank)
     uint8_t count = 0;
     square from = {file, rank};
 
-    for (int i = FILE_1; i < FILE_8; i++) {
+    for (int i = FILE_1; i <= FILE_8; i++) {
         square to = {i, rank};
 
         if (rook_attak_square(board, from, to)) {
@@ -84,7 +88,7 @@ static uint8_t available_rook_moves(Board board, uint8_t file, uint8_t rank)
         }
     }
    
-    for (int i = COL_A; i < COL_H; i++) {
+    for (int i = COL_A; i <= COL_H; i++) {
         square to = {file, i};
 
         if (rook_attak_square(board, from, to)) {
@@ -100,7 +104,7 @@ static bool x_ray(Board board, uint8_t file, uint8_t rank)
     int8_t not_turn = NOT_TURN(board, file, rank);
     square from = {file, rank};
 
-    for (int i = FILE_1; i < FILE_8; i++) {
+    for (int i = FILE_1; i <= FILE_8; i++) {
         square to = {i, rank};
         if ((board[i][rank] == (QUEEN * not_turn) || 
             board[i][rank] == (KING * not_turn)) &&
@@ -109,7 +113,7 @@ static bool x_ray(Board board, uint8_t file, uint8_t rank)
         }
     }
 
-    for (int i = COL_A; i < COL_H; i++) {
+    for (int i = COL_A; i <= COL_H; i++) {
         square to = {file, i};
         if ((board[file][i] == (QUEEN * not_turn) || 
             board[file][i] == (KING * not_turn)) &&
