@@ -331,3 +331,43 @@ TEST(evalution_bishop_x_ray)
     assertTrue(mat4 >  mat3);
 
 }
+
+TEST(evaluation_knight)
+{
+    int32_t mat1, mat2, mat3, mat4, mat5, mat6;
+    Node_t node1, node2, node3, node4, node5, node6;
+    retval_t rv;
+    char fen1[] = "8/1n6/8/8/8/8/8/8 w KQkq - 0 0";        
+    char fen2[] = "8/8/8/3n4/8/8/8/8 w KQkq - 0 0";        
+    char fen3[] = "8/8/2p5/3n4/8/8/8/8 w KQkq - 0 0";        
+
+    rv = get_node_from_fen(&node1, fen1);
+    assertEquals(rv, RV_SUCCESS);
+    rv = get_node_from_fen(&node2, fen2);
+    assertEquals(rv, RV_SUCCESS);
+    rv = get_node_from_fen(&node3, fen3);
+    assertEquals(rv, RV_SUCCESS);
+    
+    mat1 = knight_evaluation(node1.board, FILE_7, COL_B);
+    mat2 = knight_evaluation(node2.board, FILE_5, COL_D);
+    assertTrue(mat2 < mat1);
+    mat3 = knight_evaluation(node3.board, FILE_5, COL_D);
+    assertTrue(mat3 < mat2);
+
+    char fen4[] = "8/8/8/8/8/8/8/1N7 w KQkq - 0 0";        
+    char fen5[] = "8/8/8/8/3N4/8/8/8 w KQkq - 0 0";        
+    char fen6[] = "8/8/8/8/3N4/2P5/8/8 w KQkq - 0 0";        
+
+    rv = get_node_from_fen(&node4, fen4);
+    assertEquals(rv, RV_SUCCESS);
+    rv = get_node_from_fen(&node5, fen5);
+    assertEquals(rv, RV_SUCCESS);
+    rv = get_node_from_fen(&node6, fen6);
+    assertEquals(rv, RV_SUCCESS);
+    
+    mat4 = knight_evaluation(node4.board, FILE_1, COL_B);
+    mat5 = knight_evaluation(node5.board, FILE_4, COL_D);
+    assertTrue(mat5 > mat4);
+    mat6 = knight_evaluation(node6.board, FILE_4, COL_D);
+    assertTrue(mat6 > mat5);
+}
