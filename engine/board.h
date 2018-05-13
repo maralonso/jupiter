@@ -69,7 +69,8 @@
         B_SHORT_CASTLE | \
         B_LONG_CASTLE )
 
-#define TURN(x,y)	((x[y[0]][y[1]] > 0) ? WHITE: BLACK)
+#define TURN(board, x, y)	((board[x][y] > 0) ? WHITE: BLACK)
+#define NOT_TURN(board, x, y)	((board[x][y] > 0) ? BLACK: WHITE)
 
 /* No passant moves */
 #define NO_PASSANT  0x7F

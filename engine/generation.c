@@ -68,19 +68,19 @@ static retval_t check_square_safe(Node_t *node, uint8_t rank, uint8_t file, squa
     
     switch(node->board[file][rank] * node->turn * -1) {
         case PAWN:
-            attaked = pawn_attak_square(node, from, to);
+            attaked = pawn_attak_square(node->board, from, to);
             break;
         case ROOK:
-            attaked = rook_attak_square(node, from, to);
+            attaked = rook_attak_square(node->board, from, to);
             break;
         case KNIGHT:
-            attaked = knight_attak_square(node, from, to);
+            attaked = knight_attak_square(node->board, from, to);
             break;
         case BISHOP:
-            attaked = bishop_attak_square(node, from, to);
+            attaked = bishop_attak_square(node->board, from, to);
             break;
         case QUEEN:
-            attaked = queen_attak_square(node, from, to); 
+            attaked = queen_attak_square(node->board, from, to); 
             break;
         default:
             attaked = false;
