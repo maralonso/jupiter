@@ -54,7 +54,7 @@ static bool unexpulsable_bishop(Board board, uint8_t file, uint8_t rank)
     int8_t not_turn = NOT_TURN(board, file, rank);
 
     for (int i = file + turn; i >= FILE_1 && i <= FILE_8; i += turn) {
-        if (((rank -1) >= COL_A && board[i][rank - 1] == (PAWN * not_turn)) ||
+        if (((rank - 1) >= COL_A && board[i][rank - 1] == (PAWN * not_turn)) ||
             ((rank + 1) <= COL_H && board[i][rank + 1] == (PAWN * not_turn))) {
             return false;
         }
@@ -71,8 +71,8 @@ static bool supported_bishop(Board board, uint8_t file, uint8_t rank)
         return false;
     }
 
-    if ((((rank - 1) > COL_A) && board[file - turn][rank - 1] == (PAWN * turn)) || 
-        (((rank + 1) < COL_H) && board[file - turn][rank + 1] == (PAWN * turn))) {
+    if ((((rank - 1) >= COL_A) && board[file - turn][rank - 1] == (PAWN * turn)) || 
+        (((rank + 1) <= COL_H) && board[file - turn][rank + 1] == (PAWN * turn))) {
         return true;
     }  
 
@@ -114,7 +114,7 @@ static uint8_t available_bishop_moves(Board board, uint8_t file, uint8_t  rank)
 
 static bool x_ray(Board board, uint8_t file, uint8_t rank)
 {
-    int8_t turn = TURN(board, file,rank);
+    int8_t not_turn = NOT_TURN(board, file,rank);
     square from = {file, rank};
     int8_t start_file, start_rank;
 
@@ -125,8 +125,8 @@ static bool x_ray(Board board, uint8_t file, uint8_t rank)
     for (int i = start_file, j = start_rank;
          i <= FILE_8 && j <= COL_H;  i++, j++) {
         square to = {i, j};
-        if ((i != file) && (board[i][j] == (QUEEN * turn) ||
-             board[i][j] == (KING * turn)) &&    
+        if ((i != file) && (board[i][j] == (QUEEN * not_turn) ||
+             board[i][j] == (KING * not_turn)) &&
            (!bishop_attak_square(board, from, to))) {
             return true;
         }
@@ -139,8 +139,8 @@ static bool x_ray(Board board, uint8_t file, uint8_t rank)
     for (int i = start_file, j = start_rank;
          i >= FILE_1 && j <= COL_H;  i--, j++) {
          square to = {i, j};
-         if ((i != file) && (board[i][j] == (QUEEN * turn) ||
-             board[i][j] == (KING * turn)) &&    
+         if ((i != file) && (board[i][j] == (QUEEN * not_turn) ||
+             board[i][j] == (KING * not_turn)) &&
            (!bishop_attak_square(board, from, to))) {
             return true;
         }
