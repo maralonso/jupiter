@@ -60,13 +60,13 @@ static bool connected_rooks(Board board, uint8_t file, uint8_t rank)
 {
     int16_t rook = board[file][rank];
 
-    for (int i = FILE_1; i < FILE_8; i++) {
+    for (int i = FILE_1; i <= FILE_8; i++) {
         if (board[i][rank] == rook && i != file) {
             return true;
         }
     }
 
-    for (int i = COL_A; i < COL_H; i++) {
+    for (int i = COL_A; i <= COL_H; i++) {
         if (board[file][i] == rook && i != rank) {
             return true;
         }
