@@ -1,20 +1,22 @@
 EXEC    = jupitests
 
 CFLAGS  = -c -g -Wall -std=c99
-LDFLAGS = -L../engine -lchessengine
+LDFLAGS =
 
-CSOURCES = $(wildcard *.c) $(wildcard cu/*.c)
+ALLSOURCES = $(wildcard *.c) $(wildcard cu/*.c) $(wildcard ../engine/**/*.c) $(wildcard ../engine/*.c)
+EXCLUDES= ../engine/main.c
+CSOURCES= $(filter-out $(EXCLUDES), $(ALLSOURCES))
 
 VPATH=cu
+VPATH=../engine
 
 COBJECTS = $(CSOURCES:.c=.o)               
 
-INCLUDES = -I ./cu -I ./  -I ./include -I ../engine
+INCLUDES = -I ./cu -I ./  -I ./include -I ../engine -I ../engine/pieces/include
 
 all: $(CSOURCES) $(EXEC) 
 
 $(EXEC): $(COBJECTS)
-	make -C ../engine
 	@echo ''
 	$(CC) $(INCLUDES) $(COBJECTS) -o $@ $(LDFLAGS)
 	rm -rf *.o                               

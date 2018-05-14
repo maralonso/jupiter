@@ -1,5 +1,4 @@
-LIBRARY = libchessengine.a
-EXEC    = engine
+EXEC    = jupiter
 
 CFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror
 LDFLAGS =
@@ -15,25 +14,14 @@ INCLUDES = -I ./ -I pieces/include
 LIBS = 
 
 
-all: $(CSOURCES) $(LIBRARY) 
+all: $(CSOURCES) $(EXEC) 
 
 lib: $(LIBRARY) 
 
 debug: $(CSOURCES) $(EXEC)
-
-$(LIBRARY): $(COBJECTS)
-	@echo 'Building Library: $@'
-	ar rcs $@ $(LDFLAGS) $(LIBS) $(COBJECTS) 
-	rm -rf *.o                               
-	rm -rf pieces/*.o
-	@echo ''
-	@echo 'Finished building target $@'
-
-
-                                 
+                                
 $(EXEC): $(COBJECTS)
-	$(CC) $(CFLAGS) debug_main.c -o debug_main.o
-	$(CC) debug_main.o $(COBJECTS) -o $@                     
+	$(CC) $(COBJECTS) -o $@                     
 	rm -rf *.o                               
 	@echo ''
 	@echo 'Finished building target $@'
@@ -45,6 +33,5 @@ $(EXEC): $(COBJECTS)
 clean:
 		rm -rf *.o
 		rm -rf pieces/*.o
-		rm -rf $(LIBRARY)
 		rm -rf $(EXEC)
 
