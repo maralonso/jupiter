@@ -230,6 +230,14 @@ static void cu_run_fork(const char *ts_name, cu_test_suite_t *ts,
 
 }
 
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
+
 static int run_test(const char *t_name, cu_test_func_t t_func)
 {
     int test_suite_failed = 0;
@@ -249,10 +257,10 @@ static int run_test(const char *t_name, cu_test_func_t t_func)
     if (test_failed){
         cu_fail_tests++;
         test_suite_failed = 1;
-        printf("\t[FAIL]\n", cu_current_test);
+        printf(ANSI_COLOR_RED "\t[FAIL]\n" ANSI_COLOR_RESET, cu_current_test);
     }else{
        cu_success_tests++;
-        printf("\t[OK]\n", cu_current_test);
+        printf(ANSI_COLOR_GREEN "\t[OK]\n" ANSI_COLOR_RESET, cu_current_test);
     }
 
     return test_suite_failed;
