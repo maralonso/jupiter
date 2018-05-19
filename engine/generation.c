@@ -132,6 +132,20 @@ static void clear_castle(Node_t *node, Move_t move)
     node->castles &= ~castles;
 }
 
+retval_t make_move(Node_t *node, Move_t mov)
+{
+    node->board[mov.to[0]][mov.to[1]] = node->board[mov.from[0]][mov.from[1]];
+    node->board[mov.from[0]][mov.from[1]] = 0;
+
+    node->turn = node->turn * -1;
+    node->half_moves++;
+    if (node->turn == WHITE) {
+        node->moves++;
+    }
+
+    return RV_SUCCESS;
+}
+
 retval_t move_init(Node_t **node)
 {
     if (node == NULL) {
