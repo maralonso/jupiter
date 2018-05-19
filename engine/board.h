@@ -154,9 +154,7 @@ static const Board initial_board = {
     {ROOK_B, KNIGHT_B, BISHOP_B, QUEEN_B, KING_B, BISHOP_B, KNIGHT_B, ROOK_B}
 };
 
-#define DEBUG
-
-#ifdef DEBUG
+#ifdef DEBUG_ENABLE
 #define DBG(x...) printf(x)
 #else
 #define DBG(x...) 
