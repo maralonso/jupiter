@@ -9,6 +9,7 @@
 #include "test_fen.h"
 #include "test_evaluation.h"
 #include "test_notation.h"
+#include "test_uci.h"
 #include "cu/cu.h"
 
 TEST_SUITES {
@@ -23,6 +24,7 @@ TEST_SUITES {
       TEST_SUITE_ADD(fen_utils),
       TEST_SUITE_ADD(evaluation),
       TEST_SUITE_ADD(notation),
+      TEST_SUITE_ADD(test_uci),
       TEST_SUITES_CLOSURE
 };
 

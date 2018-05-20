@@ -208,3 +208,22 @@ TEST(test_gen_moves)
     count = get_tree_count(node);
     assertEquals(41, count);
 }
+
+TEST(test_make_move)
+{
+    Node_t *node;
+    retval_t rv;
+    rv = move_init(&node);
+
+    Move_t move = {{FILE_1, COL_B}, {FILE_3, COL_C}};
+    rv = make_move(node, move);
+    assertEquals(RV_SUCCESS, rv);
+    assertEquals(KNIGHT_W, node->board[FILE_3][COL_C]);
+    assertEquals(BLACK, node->turn);
+
+    Move_t move2 = {{FILE_7, COL_D}, {FILE_5, COL_D}};
+    rv = make_move(node, move2);
+    assertEquals(RV_SUCCESS, rv);
+    assertEquals(PAWN_B, node->board[FILE_5][COL_D]);
+    assertEquals(WHITE, node->turn);
+}

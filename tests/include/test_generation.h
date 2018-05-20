@@ -7,6 +7,7 @@ TEST(test_insert_move_fail);
 TEST(test_square_attaked);
 TEST(test_clear_castles);
 TEST(test_gen_moves);
+TEST(test_make_move);
 
 TEST_SUITE(generation) {
     TEST_ADD(test_move_init),
@@ -16,5 +17,6 @@ TEST_SUITE(generation) {
     TEST_ADD(test_square_attaked),
     TEST_ADD(test_clear_castles),
     TEST_ADD(test_gen_moves),
+    TEST_ADD(test_make_move),
     TEST_SUITE_CLOSURE
 };
