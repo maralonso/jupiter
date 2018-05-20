@@ -7,6 +7,8 @@ os:
     -linux
 
 script:
+    - make -C engine/ clean
+    - make -C tests/ clean  
     - make -C tests/cu
     - make -C tests/
     - tests/jupitests  
