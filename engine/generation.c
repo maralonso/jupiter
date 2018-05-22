@@ -3,6 +3,7 @@
 #include "pieces.h"
 #include <string.h>
 #include <stdbool.h>
+#include "evaluation.h"
 
 extern  retval_t WALK_BOARD(Node_t *node, Walk_Function func, square to);
 
@@ -107,6 +108,7 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece)
 
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = piece;
+    new->value = evaluate(new->board); 
 
     insert_node(parent, new);
 
@@ -201,6 +203,7 @@ retval_t insert_move(Node_t *parent, Move_t move)
 
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = aux;
+    new->value = evaluate(new->board); 
     insert_node(parent, new);
 
     return RV_SUCCESS;
@@ -247,6 +250,7 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     new->board[file][rook] = 0;
     new->board[file][rook] = 0;
     new->board[file][rook] = 0;
+    new->value = evaluate(new->board); 
     
     insert_node(parent, new);
 
