@@ -8,6 +8,7 @@
 #include "generation.h"
 #include "fen.h"
 #include "notation.h"
+#include "engine.h"
 
 //GUI to engine
 #define CMD_UCI         "uci"
@@ -263,7 +264,23 @@ static void uci_position(command_t cmd)
 
 static void uci_go(command_t cmd)
 {
-
+    engine_cfg_t cfg;
+    
+    if (cmd.body.go.mode == INFINITE) {
+        cfg.mode = ENGINE_INFINITE;
+    }
+    if (cmd.body.go.mode == DEPTH) {
+        cfg.mode = ENGINE_DEPTH;
+        cfg.data.depth = cmd.body.go.depth;
+    }
+    if (cmd.body.go.mode == TIME) {
+        cfg.mode = ENGINE_TIME;
+        cfg.data.time = node->turn == WHITE? cmd.body.go.wtime: cmd.body.go.btime;
+    }
+        
+        
+    engine_set_log_func(send_command);
+    engine_go(node, cfg);
 }
 
 static void uci_init()
