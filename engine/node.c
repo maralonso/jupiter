@@ -38,10 +38,12 @@ static void count_deep(const Node_t *root, uint8_t deep)
 static void _delete_node(Node_t *node)
 {
     Node_t *aux = node->child;
+    Node_t *aux2;
  
     while (aux != NULL) {
+        aux2 = aux->next;
         _delete_node(aux);
-        aux = aux->next;
+        aux = aux2;
     }
 
     free(node);
