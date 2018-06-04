@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "evaluation.h"
+#include "notation.h"
 
 extern  retval_t WALK_BOARD(Node_t *node, Walk_Function func, square to);
 
@@ -203,6 +204,7 @@ retval_t insert_move(Node_t *parent, Move_t move)
 
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = aux;
+    get_notation_from_move(&move, new->notation);
     new->value = evaluate(new->board); 
     insert_node(parent, new);
 
