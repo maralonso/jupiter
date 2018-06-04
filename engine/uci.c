@@ -264,6 +264,8 @@ static void uci_position(command_t cmd)
 
 static void uci_go(command_t cmd)
 {
+    char *mov;
+    char cmd_mov[NOTATION_STR_LEN + 10];
     engine_cfg_t cfg;
     
     if (cmd.body.go.mode == INFINITE) {
@@ -280,7 +282,9 @@ static void uci_go(command_t cmd)
         
         
     engine_set_log_func(send_command);
-    engine_go(node, cfg);
+    mov = engine_go(node, cfg);
+    sprintf(cmd_mov, "%s %s", "bestmove", mov);
+    send_command(cmd_mov);
 }
 
 static void uci_init()
