@@ -6,6 +6,7 @@
 #include "engine.h"
 #include "node.h"
 #include "delay.h"
+#include "search.h"
 
 static void (*log_func)(const char *info) = NULL;
 
@@ -38,8 +39,8 @@ static engine_info_t engine_think(Node_t *node)
     start = get_clock_ms();
 
     generate_nodes(node);
+    get_best_move(node, info.mov);
 
-    //search
     end = get_clock_ms();
     info.time = clock_diff_ms(end, start);
     info.nodes_count = get_tree_count(node) - 1;
@@ -101,5 +102,6 @@ char* engine_go(Node_t *node, engine_cfg_t cfg)
         log_info(info, current_depth, elapsed_time);
     } 
 
+    delete_node(node);
     return info.mov;
 } 
