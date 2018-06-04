@@ -3,7 +3,6 @@
 
 #include "board.h"
 
-#define NOTATION_STR_LEN    4
 
 retval_t get_move_from_notation(Move_t *mov, char *not);
 retval_t get_notation_from_move(Move_t *mov, char *not);
