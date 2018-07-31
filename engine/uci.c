@@ -251,14 +251,15 @@ static void uci_position(command_t cmd)
         move_init(&node);
     } else {
         get_node_from_fen(node, cmd.body.pos.fen);
-        char *token = strtok(cmd.body.pos.moves, " ");
-        while (token != NULL) {
-            Move_t mov;
-            if (RV_SUCCESS == get_move_from_notation(&mov, token)) {
-                make_move(node, mov);
-            }
-            token = strtok(NULL, " ");
+    }
+    
+    char *token = strtok(cmd.body.pos.moves, " ");
+    while (token != NULL) {
+        Move_t mov;
+        if (RV_SUCCESS == get_move_from_notation(&mov, token)) {
+            make_move(node, mov);
         }
+        token = strtok(NULL, " ");
     }
 }
 
