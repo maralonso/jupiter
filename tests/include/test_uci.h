@@ -10,7 +10,8 @@ TEST(decode_cmd_position);
 TEST(decode_cmd_go);
 TEST(decode_cmd_stop);
 TEST(decode_cmd_stop);
-TEST(decode_cmd_stop);
+TEST(cmd_is_ready);
+
 
 TEST_SUITE(test_uci) {
     TEST_ADD(decode_cmd_quit),
@@ -24,6 +25,7 @@ TEST_SUITE(test_uci) {
     TEST_ADD(decode_cmd_stop),
     TEST_ADD(decode_cmd_stop),
     TEST_ADD(decode_cmd_stop),
+    TEST_ADD(cmd_is_ready),
     TEST_SUITE_CLOSURE
 };
 

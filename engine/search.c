@@ -9,7 +9,8 @@ static int32_t get_minimax(Node_t *node)
     int32_t minmax = -10000 * node->turn;
 
     while (aux != NULL) {
-        if ((aux->value * node->turn) > minmax) {
+        if ((node->turn == BLACK && aux->value < minmax) ||
+            (node->turn == WHITE && aux->value > minmax)) { 
             minmax = aux->value;
         }
         aux = aux->next;
