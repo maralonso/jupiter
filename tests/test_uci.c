@@ -191,3 +191,26 @@ TEST(decode_cmd_uci)
     assertEquals(cmd.code, UCI);
 }
 
+TEST(cmd_is_ready)
+{
+    int old_stdout = dup(1);
+    FILE *in = fopen("tests/tmp_stdin.txt", "wb");
+    char response[100];
+
+    fprintf(in, "%s\n", "isready");
+    fprintf(in, "%s\n", "quit");
+    fclose(in);
+
+    freopen("tests/tmp_stdin.txt", "r", stdin);
+    freopen("tests/tmp_stdout.txt", "wb", stdout);
+
+    uci_main();
+
+    FILE *out = fopen("tests/tmp_stdout.txt", "r");
+    while (!feof(out)) {
+        fgets(response, 100, out);
+    }
+    assertEquals(0, strncmp(response, "readyok", strlen("readyok")));
+
+    dup2(old_stdout, 1);
+}
