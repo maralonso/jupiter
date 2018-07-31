@@ -57,7 +57,7 @@ retval_t logging_init()
     return RV_SUCCESS;
 }
 
-void logging(log_priority_t log_level, const char *msg)
+void logging(log_priority_t log_level, const char *msg, const char *msg2)
 {
     if (!initialized) {
         return;
@@ -72,7 +72,7 @@ void logging(log_priority_t log_level, const char *msg)
     
     FILE *f = fopen(config.log_file, "a+");
     if (f) {
-        fprintf(f, "[%s] - %s\t%s\n", time_str, priorities[log_level], msg);
+        fprintf(f, "[%s] - %s\t%s %s\n", time_str, priorities[log_level], msg, msg2);
         fclose(f);
     }
 }

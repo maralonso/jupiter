@@ -99,14 +99,14 @@ static void send_command(const char *cmd)
     int fd = dup(STDOUT_FILENO);
     write(fd, cmd, strlen(cmd));
     write(fd, "\n", 1);
-    LOG(INFO, cmd);
+    LOG2(INFO, "engine:", cmd);
 }
 
 static void receive_command(char *cmd)
 {
     fgets(cmd, MAX_CMD_STR_LEN, stdin);
     cmd[strlen(cmd) - 1] = 0x0;
-    LOG(INFO, cmd);
+    LOG2(INFO, "gui:", cmd);
 }
 
 static retval_t decode_position(command_t *cmd, char *str)
