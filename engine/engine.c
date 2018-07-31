@@ -59,7 +59,7 @@ static bool keep_running(engine_cfg_t cfg, uint32_t elapsed_time, uint8_t curren
         //ask for command stop
     }
     if (cfg.mode == ENGINE_TIME) {
-        if ((cfg.data.time / 5) > elapsed_time) {
+        if ((cfg.data.time / 5) < elapsed_time) {
             return false;
         }
     }
