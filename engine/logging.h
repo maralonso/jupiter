@@ -18,7 +18,7 @@ static const char priorities[][MAX_PRIORITY_LEN] = {
 
 
 retval_t logging_init();
-void logging(log_priority_t log_level, char *msg);
+void logging(log_priority_t log_level, const char *msg);
 log_priority_t get_priority_from_string(char *str);
 
 #define LOG(lev, msg)   (logging(lev, msg))
