@@ -1,0 +1,8 @@
+
+
+# LOG level can be DEBUG, INFO or ERROR. It's set to INFO by default.
+LOG_LEVEL = DEBUG
+
+# LOG File
+#
+LOG_FILE =  jupiter.log

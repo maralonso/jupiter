@@ -4,6 +4,7 @@
 #include "delay.h"
 #include <poll.h>
 #include "uci.h"
+#include "config.h"
 
 #define WAIT_FOR_GUI_MS -1
 
@@ -36,8 +37,19 @@ user_mode_t get_user_mode()
     return mode;
 }
 
+static void init()
+{
+    config.log_level = INFO;
+    strcpy(config.log_file, DEFAULT_LOG_FILE);
+
+    get_conf();
+    logging_init();
+}
+
 int main(void)
 {
+    init();
+
     switch (get_user_mode()) {
         case UCI_MODE:
             uci_main();

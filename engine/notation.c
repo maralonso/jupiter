@@ -24,6 +24,6 @@ retval_t get_notation_from_move(Move_t *mov, char *not)
     not[1] = mov->from[0] + '1';
     not[2] = mov->to[1] + 'a';
     not[3] = mov->to[0] + '1';
-
+    not[4] = 0x0;
     return RV_SUCCESS;
 }

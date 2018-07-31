@@ -102,6 +102,7 @@ typedef enum {
     CHECK_MATE,
 } check_status_t;
 
+#define NOTATION_STR_LEN    5
 
 /**
  *
@@ -109,7 +110,7 @@ typedef enum {
 struct Node {
     //Move_t mov;
 	Board board;
-	char notation[10];
+	char notation[NOTATION_STR_LEN];
 	int value;
 
     uint8_t moves;
