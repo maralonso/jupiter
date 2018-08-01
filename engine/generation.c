@@ -3,6 +3,7 @@
 #include "pieces.h"
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "evaluation.h"
 #include "notation.h"
 
@@ -144,10 +145,22 @@ static void make_castle(Node_t *node, Move_t mov)
     node->board[mov.from[0]][rook_from] = 0;
 }
 
+static void make_passant(Node_t *node, Move_t mov)
+{
+    node->board[mov.from[0]][mov.to[1]] = 0;
+}
+
 retval_t make_move(Node_t *node, Move_t mov)
 {
-    if (node->board[mov.from[0]][mov.from[1]] == KING * node->turn) {
+    if (node->board[mov.from[0]][mov.from[1]] == KING * node->turn &&
+        abs(mov.from[1] - mov.to[1]) > 1) {
         make_castle(node, mov);
+    }
+
+    if (node->board[mov.from[0]][mov.from[1]] == PAWN * node->turn &&
+        mov.from[1] != mov.to[1] &&
+        node->board[mov.to[0]][mov.to[1]] == 0) {
+        make_passant(node, mov);
     }
 
     node->board[mov.to[0]][mov.to[1]] = node->board[mov.from[0]][mov.from[1]];

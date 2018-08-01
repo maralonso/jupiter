@@ -282,3 +282,34 @@ TEST(test_make_move_castle)
     assertEquals(ROOK_B, node4.board[FILE_8][COL_F]);
 
 }
+
+TEST(test_make_move_passant)
+{
+    Node_t node, node2;
+    retval_t rv;
+    char fen[] = "8/8/8/4Pp2/8/8/8/8 w KQkq f6 0 0";        
+    rv = get_node_from_fen(&node, fen);
+    assertEquals(rv, RV_SUCCESS);
+
+    Move_t move = {{FILE_5, COL_E}, {FILE_6, COL_F}};
+    rv = make_move(&node, move);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(PAWN_W, node.board[FILE_6][COL_F]);
+    assertEquals(0, node.board[FILE_5][COL_F]);
+    assertEquals(0, node.board[FILE_5][COL_E]);
+    
+    char fen2[] = "8/8/8/8/4Pp2/8/8/8 b KQkq e3 0 0";        
+    rv = get_node_from_fen(&node2, fen2);
+    assertEquals(rv, RV_SUCCESS);
+
+    Move_t move2 = {{FILE_4, COL_F}, {FILE_3, COL_E}};
+    rv = make_move(&node2, move2);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(PAWN_B, node2.board[FILE_3][COL_E]);
+    assertEquals(0, node2.board[FILE_4][COL_E]);
+    assertEquals(0, node2.board[FILE_4][COL_F]);
+}
+
+
+
+
