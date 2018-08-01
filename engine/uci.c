@@ -9,6 +9,7 @@
 #include "fen.h"
 #include "notation.h"
 #include "engine.h"
+#include "logging.h"
 
 //GUI to engine
 #define CMD_UCI         "uci"
@@ -41,7 +42,7 @@ static Node_t *node;
 typedef enum {
     INVALID_CMD = 0,
     UCI,
-    DEBUG,
+    DBG,
     ISREADY,
     SETOPT,
     REGISTER,
@@ -98,16 +99,14 @@ static void send_command(const char *cmd)
     int fd = dup(STDOUT_FILENO);
     write(fd, cmd, strlen(cmd));
     write(fd, "\n", 1);
+    LOG2(INFO, "engine:", cmd);
 }
 
 static void receive_command(char *cmd)
 {
     fgets(cmd, MAX_CMD_STR_LEN, stdin);
     cmd[strlen(cmd) - 1] = 0x0;
-   
-    FILE *f = fopen("/home/martin/cmd_log.txt", "a+");
-    fprintf(f, "%s\n", cmd);
-    fclose(f);
+    LOG2(INFO, "gui:", cmd);
 }
 
 static retval_t decode_position(command_t *cmd, char *str)
@@ -197,7 +196,7 @@ command_t decode_command(char *cmd_str)
             cmd.code = QUIT;
             break;
         } else if (strncmp(cmd_str, CMD_DEBUG, strlen(CMD_DEBUG)) == 0) {
-            cmd.code = DEBUG;
+            cmd.code = DBG;
             break;
         } else if (strncmp(cmd_str, CMD_IS_RDY, strlen(CMD_IS_RDY)) == 0) {
             cmd.code = ISREADY;
@@ -307,7 +306,7 @@ void uci_main()
         cmd = decode_command(cmd_str);
 
         switch (cmd.code) {
-            case DEBUG:
+            case DBG:
             case SETOPT:
             case REGISTER:
             case NEWGAME:

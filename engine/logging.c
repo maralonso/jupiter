@@ -42,17 +42,22 @@ retval_t logging_init()
     if (f != NULL) {
         initialized = true;
         fclose(f);
-        return RV_SUCCESS;
+        printf("Using logging file: %s\n", config.log_file);
     } else {
-        printf("Could not open logging file %s\n", config.log_file);
-        printf("Using default file: %s\n", DEFAULT_LOG_FILE);
         strcpy(config.log_file, DEFAULT_LOG_FILE);
+        f = fopen(config.log_file, "w");
+        if (f != NULL) {
+            printf("Could not open logging file %s\n", config.log_file);
+            printf("Using default file: %s\n", DEFAULT_LOG_FILE);
+            initialized = true;
+            fclose(f);
+        }
     }
-
-    return RV_ERROR;
+    printf("Logging level set to %s\n", priorities[config.log_level]);
+    return RV_SUCCESS;
 }
 
-void logging(log_priority_t log_level, char *msg)
+void logging(log_priority_t log_level, const char *msg, const char *msg2)
 {
     if (!initialized) {
         return;
@@ -67,7 +72,7 @@ void logging(log_priority_t log_level, char *msg)
     
     FILE *f = fopen(config.log_file, "a+");
     if (f) {
-        fprintf(f, "[%s] - %s\t%s\n", time_str, priorities[log_level], msg);
+        fprintf(f, "[%s] - %s\t%s %s\n", time_str, priorities[log_level], msg, msg2);
         fclose(f);
     }
 }

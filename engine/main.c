@@ -37,8 +37,23 @@ user_mode_t get_user_mode()
     return mode;
 }
 
+static void print_logo()
+{
+    FILE *f = fopen("ascii.txt", "r");
+    if (f) {
+        while (!feof(f)) {
+            char line[80];
+            memset(line, 0x0, 80);
+            fgets(line, 80, f);
+            printf(line);
+        }
+     fclose(f);   
+    }
+}
+
 static void init()
 {
+    print_logo();
     config.log_level = INFO;
     strcpy(config.log_file, DEFAULT_LOG_FILE);
 
