@@ -25,8 +25,9 @@ static void generate_nodes(Node_t *node)
     while(aux != NULL) {
         if (aux->child != NULL) {
             generate_nodes(aux->child);
-        } 
-        get_moves(aux);
+        } else { 
+            get_moves(aux);
+        }
         aux = aux->next;
     }
 }
