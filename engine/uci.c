@@ -113,6 +113,7 @@ static retval_t decode_position(command_t *cmd, char *str)
 {
     char *token = strtok(NULL, " ");
     memset(cmd->body.pos.fen, 0x0, MAX_FEN_LEN);
+    memset(cmd->body.pos.moves, 0x0, MAX_FEN_LEN);
        
     if (strncmp(token, "startpos", strlen("startpos")) == 0) {
         strncpy(cmd->body.pos.fen, "startpos", strlen("startpos"));
