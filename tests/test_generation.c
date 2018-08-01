@@ -5,6 +5,7 @@
 #include "node.h"
 #include <string.h>
 #include <stdio.h>
+#include "fen.h"
 
 
 TEST(test_move_init)
@@ -226,4 +227,58 @@ TEST(test_make_move)
     assertEquals(RV_SUCCESS, rv);
     assertEquals(PAWN_B, node->board[FILE_5][COL_D]);
     assertEquals(WHITE, node->turn);
+}
+
+TEST(test_make_move_castle)
+{
+    Node_t node, node2, node3, node4;
+    retval_t rv;
+    char fen[] = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 0";        
+    rv = get_node_from_fen(&node, fen);
+    assertEquals(rv, RV_SUCCESS);
+
+    Move_t move = {{FILE_1, COL_E}, {FILE_1, COL_G}};
+    rv = make_move(&node, move);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(KING_W, node.board[FILE_1][COL_G]);
+    assertEquals(0, node.board[FILE_1][COL_H]);
+    assertEquals(0, node.board[FILE_1][COL_E]);
+    assertEquals(ROOK_W, node.board[FILE_1][COL_F]);
+
+    char fen2[] = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 0";        
+    rv = get_node_from_fen(&node2, fen2);
+    assertEquals(rv, RV_SUCCESS);
+
+    Move_t move2 = {{FILE_1, COL_E}, {FILE_1, COL_C}};
+    rv = make_move(&node2, move2);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(KING_W, node2.board[FILE_1][COL_C]);
+    assertEquals(0, node2.board[FILE_1][COL_A]);
+    assertEquals(0, node2.board[FILE_1][COL_E]);
+    assertEquals(ROOK_W, node2.board[FILE_1][COL_D]);
+
+    char fen3[] = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 0";        
+    rv = get_node_from_fen(&node3, fen3);
+    assertEquals(rv, RV_SUCCESS);
+
+    Move_t move3 = {{FILE_8, COL_E}, {FILE_8, COL_C}};
+    rv = make_move(&node3, move3);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(KING_B, node3.board[FILE_8][COL_C]);
+    assertEquals(0, node3.board[FILE_8][COL_A]);
+    assertEquals(0, node3.board[FILE_8][COL_E]);
+    assertEquals(ROOK_B, node3.board[FILE_8][COL_D]);
+
+    char fen4[] = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 0";        
+    rv = get_node_from_fen(&node4, fen4);
+    assertEquals(rv, RV_SUCCESS);
+
+    Move_t move4 = {{FILE_8, COL_E}, {FILE_8, COL_G}};
+    rv = make_move(&node4, move4);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(KING_B, node4.board[FILE_8][COL_G]);
+    assertEquals(0, node4.board[FILE_8][COL_H]);
+    assertEquals(0, node4.board[FILE_8][COL_E]);
+    assertEquals(ROOK_B, node4.board[FILE_8][COL_F]);
+
 }

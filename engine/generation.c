@@ -135,8 +135,21 @@ static void clear_castle(Node_t *node, Move_t move)
     node->castles &= ~castles;
 }
 
+static void make_castle(Node_t *node, Move_t mov)
+{
+    uint8_t rook_from = mov.to[1] == COL_G? COL_H: COL_A;
+    uint8_t rook_to = mov.to[1] == COL_G? COL_F: COL_D;
+
+    node->board[mov.from[0]][rook_to] = node->board[mov.from[0]][rook_from];
+    node->board[mov.from[0]][rook_from] = 0;
+}
+
 retval_t make_move(Node_t *node, Move_t mov)
 {
+    if (node->board[mov.from[0]][mov.from[1]] == KING * node->turn) {
+        make_castle(node, mov);
+    }
+
     node->board[mov.to[0]][mov.to[1]] = node->board[mov.from[0]][mov.from[1]];
     node->board[mov.from[0]][mov.from[1]] = 0;
 
@@ -205,7 +218,7 @@ retval_t insert_move(Node_t *parent, Move_t move)
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = aux;
     get_notation_from_move(&move, new->notation);
-    new->value = evaluate(new->board); 
+    new->value = evaluate(new->board);
     insert_node(parent, new);
 
     return RV_SUCCESS;
@@ -254,6 +267,9 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     new->board[file][rook] = 0;
     new->value = evaluate(new->board); 
     
+    Move_t move = {{COL_E, file}, {new_king, file}};
+    get_notation_from_move(&move, new->notation);
+
     insert_node(parent, new);
 
     return RV_SUCCESS;
