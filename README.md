@@ -1,6 +1,26 @@
 # Jupiter
-A totally useless chess engine
 
+                            = =
+               ........  =    =
+             ............   =
+            ..............=
+            .......... =..
+          = ........=.....
+        =    ...=........
+       =     = ........
+       =  =     \..../
+                ------
+                 |  |
+                 |  |
+                 |  |
+                 |  |
+                /    \
+              (________)        JUPITER CHESS
+   ----------------------------------------------
+   
+Jupiter is an UCI-compatible chess engine for Linux.
+
+## Files
 
 ## Build and run engine
 
@@ -12,4 +32,4 @@ A totally useless chess engine
 - make -C tests/
 - tests/jupitests
 
-
+## Configuration File
