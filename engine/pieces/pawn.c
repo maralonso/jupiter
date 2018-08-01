@@ -52,7 +52,7 @@ static retval_t pawn_passant(Node_t *node, square sq, uint8_t file, uint8_t col)
     if (node->passant == col && ((node->board[file][col] * node->turn) < 0) &&
         file == sq[0]  && abs(col -sq[1]) == 1) {
             Move_t mov = {{sq[0], sq[1]}, {file, col}};
-            SUCCES_OR_RETURN(insert_move(node, mov));
+            SUCCES_OR_RETURN(insert_passant(node, mov));
     }
     return RV_SUCCESS;
 }

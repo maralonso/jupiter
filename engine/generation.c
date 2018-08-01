@@ -288,6 +288,34 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     return RV_SUCCESS;
 }
 
+retval_t insert_passant(Node_t *parent, Move_t move)
+{
+    if (parent == NULL) {
+        return RV_ERROR;
+    }
+
+    Node_t *new = create_move();
+    if (new == NULL) {
+        return RV_NO_MEMORY;
+    }
+
+    new->turn   = parent->turn * -1;
+    new->castles = parent->castles;
+    memcpy(&new->board, &parent->board, sizeof(Board));
+
+    int16_t aux = new->board[move.from[0]][move.from[1]];
+
+    new->board[move.from[0]][move.from[1]] = 0;
+    new->board[move.to[0]][move.to[1]] = aux;
+    make_passant(new, move);
+    get_notation_from_move(&move, new->notation);
+    new->value = evaluate(new->board);
+    insert_node(parent, new);
+
+    return RV_SUCCESS;
+
+}
+
 bool square_attaked(Node_t *node, square sq)
 {
     return WALK_BOARD(node,check_square_safe, sq) != RV_SUCCESS;
