@@ -20,24 +20,24 @@
    
 Jupiter is an UCI-compatible chess engine for Linux.
 
-You can use it with any User Interface that support UCI protocol, like:
-    - pychess (http://www.pychess.org/)
+You can use it with any User Interface that support UCI protocol, like:   
+    - pychess (http://www.pychess.org/)     
     - scid    (http://scid.sourceforge.net/) 
 
 ## Files
-    - **engine/**: Engine source files
-    - **tests/**: Engine tests source files
-    - config: Engine configuration file.    
+    * **engine**: Engine source files
+    * **tests**: Engine tests source files
+    * config: Engine configuration file.    
 
 ## Build and run engine
 
-- make -C engine/
-- engine/jupiter
+* make -C engine/
+* engine/jupiter
 
 ## Build and run tests
 
-- make -C tests/
-- tests/jupitests
+* make -C tests/
+* tests/jupitests
 
 ## Configuration File
 You can edit this file to change some options.
