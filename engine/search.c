@@ -2,6 +2,7 @@
 #include <string.h>
 #include "notation.h"
 #include "board.h"
+#include "logging.h"
 
 static int32_t get_minimax(Node_t *node)
 {
@@ -29,6 +30,7 @@ static void search(Node_t *root)
                 aux->value = get_minimax(aux);
             } else {
                 search(aux->child);
+                aux->value = get_minimax(aux);
             }
         }
         aux = aux->next;
@@ -57,3 +59,4 @@ void get_best_move(Node_t *node, char *move)
     search(node);
     get_move(node, move);
 }
+
