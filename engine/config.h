@@ -8,7 +8,6 @@
 #define KEY_LOG_LEVEL   "LOG_LEVEL"
 #define KEY_LOG_FILE    "LOG_FILE"
 
-#define DEFAULT_LOG_FILE "/tmp/log/jupiter.log"
 
 typedef struct {
    log_priority_t log_level;
