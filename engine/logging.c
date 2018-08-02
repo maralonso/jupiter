@@ -1,3 +1,5 @@
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <stdio.h>
 #include <time.h>
 #include <stdbool.h>
@@ -38,6 +40,12 @@ log_priority_t get_priority_from_string(char *str)
 
 retval_t logging_init()
 {
+    struct stat st = {0};
+    
+    if (stat(DEFAULT_LOG_DIR, &st) == -1) {
+        mkdir(DEFAULT_LOG_DIR, 0700);
+    }
+    
     FILE *f = fopen(config.log_file, "w");
     if (f != NULL) {
         initialized = true;
