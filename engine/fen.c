@@ -232,6 +232,7 @@ static retval_t set_fen_pieces(Node_t *node, char **fen)
                }
                **fen = 0x30 + zeros; //0x30 = 0
               (*fen)++;
+              j--;
             }
         }
         if (i > 0) {
@@ -251,6 +252,8 @@ retval_t get_fen_from_node(Node_t *node, char *fen)
     retval_t rv;
     char buffer[MAX_FEN_LEN] = {0};
     char *buff = buffer;
+
+    memset(buffer, 0x0, MAX_FEN_LEN);
 
     rv = set_fen_pieces(node, &buff);
     SUCCES_OR_RETURN(rv);
