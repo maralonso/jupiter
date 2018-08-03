@@ -7,6 +7,8 @@
 #include "node.h"
 #include "delay.h"
 #include "search.h"
+#include "fen.h"
+#include "logging.h"
 
 static void (*log_func)(const char *info) = NULL;
 
@@ -95,6 +97,10 @@ char* engine_go(Node_t *node, engine_cfg_t cfg)
     static engine_info_t info;
     uint32_t elapsed_time = 0;
     uint8_t current_depth = 0;
+
+    char fen[MAX_FEN_LEN];
+    get_fen_from_node(node, fen);
+    LOG2(DEBUG, "Board: ", fen);
 
     while (keep_running(cfg, elapsed_time, current_depth)) {
         info = engine_think(node);
