@@ -36,7 +36,7 @@
 #define CMD_OPTION      "option"
 
 #define MAX_CMD_STR_LEN 1000
-
+#define MAX_MOVES_SRT_LEN (2 * 5 * 120)
 static Node_t *node;
 
 typedef enum {
@@ -65,7 +65,7 @@ typedef struct {
 
 typedef struct {
     char fen[MAX_FEN_LEN];
-    char moves[MAX_FEN_LEN];
+    char moves[MAX_MOVES_SRT_LEN];
 } position_t;
 
 typedef enum {
@@ -185,59 +185,56 @@ static retval_t decode_go(command_t *cmd, char *str)
     return RV_SUCCESS;
 }
 
-command_t decode_command(char *cmd_str)
+void decode_command(char *cmd_str, command_t *cmd)
 {
     retval_t rv;
-    command_t cmd;
-    cmd.code = INVALID_CMD;
+    cmd->code = INVALID_CMD;
     char *token = strtok(cmd_str, " ");
 
     while (token) {
         if (strncmp(cmd_str, CMD_QUIT, strlen(CMD_QUIT)) == 0) {
-            cmd.code = QUIT;
+            cmd->code = QUIT;
             break;
         } else if (strncmp(cmd_str, CMD_DEBUG, strlen(CMD_DEBUG)) == 0) {
-            cmd.code = DBG;
+            cmd->code = DBG;
             break;
         } else if (strncmp(cmd_str, CMD_IS_RDY, strlen(CMD_IS_RDY)) == 0) {
-            cmd.code = ISREADY;
+            cmd->code = ISREADY;
             break;
         } else if (strncmp(cmd_str, CMD_SET_OPT, strlen(CMD_SET_OPT)) == 0) {
-            cmd.code = SETOPT;
+            cmd->code = SETOPT;
             //TODO
             //decode_options
             break;
         } else if (strncmp(cmd_str, CMD_REGISTER, strlen(CMD_REGISTER)) == 0) {
-            cmd.code = REGISTER;
+            cmd->code = REGISTER;
             break;
         } else if (strncmp(cmd_str, CMD_NEW_GAME, strlen(CMD_NEW_GAME)) == 0) {
-            cmd.code = NEWGAME;
+            cmd->code = NEWGAME;
             break;
         } else if (strncmp(cmd_str, CMD_POSITION, strlen(CMD_POSITION)) == 0) {
-            rv = decode_position(&cmd, cmd_str);
+            rv = decode_position(cmd, cmd_str);
             if (rv == RV_SUCCESS) {
-                cmd.code = POSITION;
+                cmd->code = POSITION;
             }
             break;
         } else if (strncmp(cmd_str, CMD_GO, strlen(CMD_GO)) == 0) {
-            cmd.code = GO;
-            decode_go(&cmd, cmd_str);
+            cmd->code = GO;
+            decode_go(cmd, cmd_str);
             break;
         } else if (strncmp(cmd_str, CMD_STOP, strlen(CMD_STOP)) == 0) {
-            cmd.code = STOP;
+            cmd->code = STOP;
             break;
         } else if (strncmp(cmd_str, CMD_PONDERHIT, strlen(CMD_PONDERHIT)) == 0) {
-            cmd.code = PONDERHIT;
+            cmd->code = PONDERHIT;
             break;
         } else if (strncmp(cmd_str, CMD_UCI, strlen(CMD_UCI)) == 0) {
-            cmd.code = UCI;
+            cmd->code = UCI;
             break;
         }
 
         token = strtok(NULL, " ");
     }
-
-    return cmd;
 }
 
 static void uci_is_ready()
@@ -245,15 +242,15 @@ static void uci_is_ready()
     send_command(CMD_RDY_OK);
 }
 
-static void uci_position(command_t cmd)
+static void uci_position(command_t *cmd)
 {
-    if (strncmp(cmd.body.pos.fen, "startpos", strlen("startpos")) == 0) {
+    if (strncmp(cmd->body.pos.fen, "startpos", strlen("startpos")) == 0) {
         move_init(&node);
     } else {
-        get_node_from_fen(node, cmd.body.pos.fen);
+        get_node_from_fen(node, cmd->body.pos.fen);
     }
     
-    char *token = strtok(cmd.body.pos.moves, " ");
+    char *token = strtok(cmd->body.pos.moves, " ");
     while (token != NULL) {
         Move_t mov;
         if (RV_SUCCESS == get_move_from_notation(&mov, token)) {
@@ -263,22 +260,22 @@ static void uci_position(command_t cmd)
     }
 }
 
-static void uci_go(command_t cmd)
+static void uci_go(command_t *cmd)
 {
     char *mov;
     char cmd_mov[NOTATION_STR_LEN + 10];
     engine_cfg_t cfg;
     
-    if (cmd.body.go.mode == INFINITE) {
+    if (cmd->body.go.mode == INFINITE) {
         cfg.mode = ENGINE_INFINITE;
     }
-    if (cmd.body.go.mode == DEPTH) {
+    if (cmd->body.go.mode == DEPTH) {
         cfg.mode = ENGINE_DEPTH;
-        cfg.data.depth = cmd.body.go.depth;
+        cfg.data.depth = cmd->body.go.depth;
     }
-    if (cmd.body.go.mode == TIME) {
+    if (cmd->body.go.mode == TIME) {
         cfg.mode = ENGINE_TIME;
-        cfg.data.time = node->turn == WHITE? cmd.body.go.wtime: cmd.body.go.btime;
+        cfg.data.time = node->turn == WHITE? cmd->body.go.wtime: cmd->body.go.btime;
     }
         
         
@@ -298,13 +295,13 @@ static void uci_init()
 void uci_main()
 {
     static char cmd_str[MAX_CMD_STR_LEN];
-    command_t cmd;
+    static command_t cmd;
 
     uci_init();
     
     while(true) {
         receive_command(cmd_str);
-        cmd = decode_command(cmd_str);
+        decode_command(cmd_str, &cmd);
 
         switch (cmd.code) {
             case DBG:
@@ -316,10 +313,10 @@ void uci_main()
             case INVALID_CMD:
                 break;   
             case GO:
-                uci_go(cmd);
+                uci_go(&cmd);
                 break;
             case POSITION:
-                uci_position(cmd);
+                uci_position(&cmd);
                 break;
             case ISREADY:
                 uci_is_ready();
