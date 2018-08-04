@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "fen.h"
+#include "notation.h"
 
 
 TEST(test_move_init)
@@ -309,6 +310,37 @@ TEST(test_make_move_passant)
     assertEquals(0, node2.board[FILE_4][COL_E]);
     assertEquals(0, node2.board[FILE_4][COL_F]);
 }
+
+TEST(test_make_move_promotion)
+{
+    Node_t node, node2;
+    retval_t rv;
+    char fen[] = "8/4P3/8/8/8/8/8/8 w KQkq f6 0 0";        
+    rv = get_node_from_fen(&node, fen);
+    assertEquals(rv, RV_SUCCESS);
+    
+    char not[] = "e7e8q";
+    Move_t move;
+    get_move_from_notation(&move, not);
+    rv = make_move(&node, move);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(QUEEN_W, node.board[FILE_8][COL_E]);
+    assertEquals(0, node.board[FILE_7][COL_E]);
+
+    char fen2[] = "3RR3/4P3/8/8/8/8/8/8 w KQkq f6 0 0";        
+    rv = get_node_from_fen(&node2, fen2);
+    assertEquals(rv, RV_SUCCESS);
+    
+    char not2[] = "e7d8q";
+    Move_t move2;
+    get_move_from_notation(&move2, not2);
+    rv = make_move(&node2, move2);
+    assertEquals(rv, RV_SUCCESS);
+    assertEquals(QUEEN_W, node2.board[FILE_8][COL_D]);
+    assertEquals(0, node2.board[FILE_7][COL_E]);
+}
+
+
 
 
 

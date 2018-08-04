@@ -10,6 +10,7 @@ TEST(test_gen_moves);
 TEST(test_make_move);
 TEST(test_make_move_castle);
 TEST(test_make_move_passant);
+TEST(test_make_move_promotion);
 
 TEST_SUITE(generation) {
     TEST_ADD(test_move_init),
@@ -22,5 +23,6 @@ TEST_SUITE(generation) {
     TEST_ADD(test_make_move),
     TEST_ADD(test_make_move_castle),
     TEST_ADD(test_make_move_passant),
+    TEST_ADD(test_make_move_promotion),
     TEST_SUITE_CLOSURE
 };
