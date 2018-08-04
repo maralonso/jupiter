@@ -75,6 +75,12 @@
 /* No passant moves */
 #define NO_PASSANT  0x7F
 
+#define PROMOTION_MASK    0x40
+#define PROMOTION_QUEEN   0x41
+#define PROMOTION_KNIGHT  0x42
+#define PROMOTION_BISHOP  0x43
+
+
 typedef int8_t  square[2];
 typedef int16_t  Board[8][8];
 

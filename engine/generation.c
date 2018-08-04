@@ -97,7 +97,7 @@ static retval_t check_square_safe(Node_t *node, uint8_t rank, uint8_t file, squa
     return RV_SUCCESS;
 }
 
-static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece)
+static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece, char c)
 {
     Node_t *new = create_move();
     if (new == NULL) {
@@ -111,7 +111,8 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece)
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = piece;
     new->value = evaluate(new->board); 
-
+    get_notation_from_move(&move, new->notation);
+    new->notation[4] = c;
     insert_node(parent, new);
 
     return RV_SUCCESS;
@@ -150,8 +151,40 @@ static void make_passant(Node_t *node, Move_t mov)
     node->board[mov.from[0]][mov.to[1]] = 0;
 }
 
+static void make_promotion(Node_t *node, Move_t mov)
+{
+    int8_t turn = TURN(node->board, mov.from[0], mov.from[1]);
+    node->board[mov.from[0]][mov.from[1]] = 0;
+    int16_t piece;
+    
+    switch (mov.to[0]) {
+        case PROMOTION_QUEEN:
+            piece = QUEEN * turn;
+            break;
+        case PROMOTION_BISHOP:
+            piece = BISHOP * turn;
+            break;
+        case PROMOTION_KNIGHT:
+            piece = KNIGHT * turn;
+            break;
+    }
+
+    node->turn = node->turn * -1;
+    node->half_moves++;
+    if (node->turn == WHITE) {
+        node->moves++;
+    }
+  
+    node->board[mov.from[0] + turn][mov.to[1]] = piece;
+}
+
 retval_t make_move(Node_t *node, Move_t mov)
 {
+    if (mov.to[0] & PROMOTION_MASK) {
+        make_promotion(node, mov);
+        return RV_SUCCESS;
+    }
+
     if (node->board[mov.from[0]][mov.from[1]] == KING * node->turn &&
         abs(mov.from[1] - mov.to[1]) > 1) {
         make_castle(node, mov);
@@ -241,13 +274,13 @@ retval_t insert_promotion(Node_t *parent, Move_t move)
 {
     retval_t rv;
 
-    rv = new_promotion(parent, move, QUEEN * parent->turn);
+    rv = new_promotion(parent, move, QUEEN * parent->turn, 'q');
     SUCCES_OR_RETURN(rv);
 
-    rv = new_promotion(parent, move, KNIGHT * parent->turn);
+    rv = new_promotion(parent, move, KNIGHT * parent->turn, 'n');
     SUCCES_OR_RETURN(rv);
 
-    rv = new_promotion(parent, move, BISHOP * parent->turn);
+    rv = new_promotion(parent, move, BISHOP * parent->turn, 'b');
     SUCCES_OR_RETURN(rv);
 
     return RV_SUCCESS;
@@ -280,7 +313,7 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     new->board[file][rook] = 0;
     new->value = evaluate(new->board); 
     
-    Move_t move = {{COL_E, file}, {new_king, file}};
+    Move_t move = {{file, COL_E}, {file, new_king}};
     get_notation_from_move(&move, new->notation);
 
     insert_node(parent, new);
