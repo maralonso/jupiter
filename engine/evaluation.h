@@ -5,7 +5,7 @@
 
 
 #define ISOLATED_PAWN_POND          -40
-#define PASSED_PAWN_POND            150
+#define PASSED_PAWN_POND            20
 #define DOUBLED_PAWN_POND           -20
 #define CONNECTED_ROOKS_POND        30
 #define ROOK_X_RAY_POND             30
