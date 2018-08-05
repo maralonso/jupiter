@@ -1,0 +1,10 @@
+*.o
+*.swp
+*~
+*.gcno
+engine/jupiter
+tests/jupitests
+TODO.md
+tags
+tests/tmp_*
+*.log
