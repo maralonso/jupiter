@@ -1,4 +1,7 @@
-# Jupiter
+# Jupiter  
+[![Build Status](https://travis-ci.org/maralonso/jupiter.svg?branch=master)](https://travis-ci.org/maralonso/jupiter)  
+[![codecov](https://codecov.io/gh/maralonso/jupiter/branch/master/graph/badge.svg)](https://codecov.io/gh/maralonso/jupiter)  
+
 
                             = =
                ........  =    =
