@@ -5,10 +5,16 @@ compiler:
 
 os:
     -linux
-
+    
+before_install:
+  - pip install --user cpp-coveralls
+    
 script:
     - make -C engine/ clean
     - make -C tests/ clean  
     - make -C tests/cu
     - make -C tests/
     - tests/jupitests  
+
+after_success:
+  - coveralls --exclude tests 

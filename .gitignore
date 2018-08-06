@@ -2,6 +2,8 @@
 *.swp
 *~
 *.gcno
+*.gcov
+*.gcda
 engine/jupiter
 tests/jupitests
 TODO.md
