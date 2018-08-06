@@ -17,4 +17,4 @@ script:
     - tests/jupitests  
 
 after_success:
-  - coveralls -r engine --exclude tests --gcov-options '\-lp *.c' 
+  - coveralls -r engine -e engine/main.c -i engine/pieces --gcov-options '\-lp *.c' 
