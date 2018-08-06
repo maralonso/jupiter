@@ -17,4 +17,5 @@ script:
     - tests/jupitests  
 
 after_success:
-  - coveralls --exclude tests --gcov-options '\-lp' 
+  - cd engine  
+  - coveralls --exclude tests --gcov-options '\-lp *.c pieces/*.c' 
