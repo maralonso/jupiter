@@ -18,4 +18,4 @@ script:
 
 after_success:
   - cd engine  
-  - coveralls --exclude tests --gcov-options '\-lp *.c pieces/*.c' 
+  - coveralls -b engine --exclude tests --gcov-options '\-lp *.c pieces/*.c' 
