@@ -17,4 +17,4 @@ script:
     - tests/jupitests  
 
 after_success:
-  - coveralls --exclude tests 
+  - coveralls --exclude tests --gcov-options '\-lp' 
