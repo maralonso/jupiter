@@ -15,6 +15,8 @@ script:
     - make -C tests/cu
     - make -C tests/
     - tests/jupitests  
+    - gcov engine/*.c engine/pieces/*.c  
 
 after_success:
-  - coveralls -b engine -r engine -e engine/main.c -i engine --gcov-options '\-l *.c' 
+    -  bash <(curl -s https://codecov.io/bash)
+    #  - coveralls -b engine -r engine -e engine/main.c -i engine --gcov-options '\-l *.c' 
