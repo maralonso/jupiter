@@ -29,6 +29,12 @@ You can use it with any User Interface that support UCI protocol, like:
     * **tests**: Engine tests source files
     * config: Engine configuration file.    
 
+## Dependencies
+OPENMP needs to be installed to use parallelism
+
+As root, run:
+* apt-get install libgomp1
+
 ## Build and run engine
 
 * make -C engine/
