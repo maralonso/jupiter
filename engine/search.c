@@ -3,6 +3,7 @@
 #include "notation.h"
 #include "board.h"
 #include "logging.h"
+#include <omp.h>
 
 static int32_t get_minimax(Node_t *node)
 {
@@ -29,6 +30,7 @@ static void search(Node_t *root)
             if (aux->child->child == NULL) {
                 aux->value = get_minimax(aux);
             } else {
+                #pragma omp task
                 search(aux->child);
                 aux->value = get_minimax(aux);
             }
