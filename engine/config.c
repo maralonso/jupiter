@@ -30,6 +30,10 @@ void get_conf()
     char buffer[MAX_LINE_LEN]; 
     FILE *cfg = fopen(CONFIG_FILE, "r");
 
+    if (cfg == NULL) {
+        return;
+    }
+
     while (fgets(buffer, MAX_LINE_LEN, cfg)) {
         if (strlen(buffer) > 1 && buffer[0] != '#') { 
             parse_line(buffer);
@@ -37,5 +41,4 @@ void get_conf()
     }
 
     fclose(cfg);
-    
 }
