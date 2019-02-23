@@ -10,6 +10,7 @@
 #include "notation.h"
 #include "engine.h"
 #include "logging.h"
+#include "node.h"
 
 //GUI to engine
 #define CMD_UCI         "uci"
@@ -247,6 +248,7 @@ static void uci_position(command_t *cmd)
     if (strncmp(cmd->body.pos.fen, "startpos", strlen("startpos")) == 0) {
         move_init(&node);
     } else {
+        node = create_node();
         get_node_from_fen(node, cmd->body.pos.fen);
     }
     
