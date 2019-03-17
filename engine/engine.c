@@ -9,6 +9,7 @@
 #include "search.h"
 #include "fen.h"
 #include "logging.h"
+#include <omp.h>
 
 static void (*log_func)(const char *info) = NULL;
 
@@ -26,6 +27,7 @@ static void generate_nodes(Node_t *node)
 
     while(aux != NULL) {
         if (aux->child != NULL) {
+            #pragma omp task
             generate_nodes(aux->child);
         } else { 
             get_moves(aux);
@@ -41,8 +43,14 @@ static engine_info_t engine_think(Node_t *node)
     
     start = get_clock_ms();
 
+    omp_set_num_threads(omp_get_max_threads());
+
+    #pragma omp parallel
+    #pragma omp single nowait
+    {
     generate_nodes(node);
     get_best_move(node, info.mov);
+    }
 
     end = get_clock_ms();
     info.time = clock_diff_ms(end, start);
