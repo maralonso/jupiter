@@ -1,9 +1,9 @@
 EXEC    = jupiter
 
-CFLAGS  = -c -fPIC -std=c99 -Wall -Werror
-DBCFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror -lgcov --coverage
-LDFLAGS =
-DBLDFLAGS = -lgcov --coverage
+CFLAGS  = -c -fPIC -std=c99 -Wall -Werror -fopenmp -O3
+DBCFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror -lgcov --coverage -fopenmp -O3
+LDFLAGS = -fopenmp
+DBLDFLAGS = -lgcov --coverage -fopenmp
 
 CSOURCES = $(wildcard *.c) $(wildcard pieces/*.c)
 
