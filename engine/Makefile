@@ -1,7 +1,7 @@
 EXEC    = jupiter
 
 CFLAGS  = -c -fPIC -std=c99 -Wall -Werror -fopenmp -O3
-DBCFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror -lgcov --coverage -fopenmp -O3
+DBCFLAGS  = -c -g -fPIC -std=c99 -Wall -Werror -lgcov --coverage -fopenmp 
 LDFLAGS = -fopenmp
 DBLDFLAGS = -lgcov --coverage -fopenmp
 
