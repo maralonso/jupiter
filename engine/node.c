@@ -51,7 +51,7 @@ static void _delete_node(Node_t *node)
 
 Node_t* create_node(void)
 {
-    Node_t *new = (Node_t *) malloc(sizeof(Node_t));
+    Node_t *new = (Node_t *) calloc(sizeof(Node_t), 1);
 
     if (new == NULL) {
         printf("No memory available\n");
