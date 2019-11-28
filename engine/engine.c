@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <omp.h>
+
 #include "board.h"
 #include "generation.h"
 #include "evaluation.h"
@@ -17,8 +19,23 @@ typedef struct {
     uint32_t nodes_count;
     uint32_t score;
     uint32_t nps;
-    uint32_t time;
+    double time;
 } engine_info_t;
+
+static int get_node_childs(Node_t *node)
+{
+    Node_t *aux;
+    int count = 0;
+    if (node->child != NULL) {
+        aux = node->child;
+        while (aux != NULL) {
+            count++;
+            aux = aux->next;
+        }
+    }
+
+    return count;
+}
 
 static void generate_nodes(Node_t *node)
 {
@@ -34,18 +51,43 @@ static void generate_nodes(Node_t *node)
     }
 }
 
+static void parallel_generation(Node_t *node)
+{
+    int node_childs = get_node_childs(node);
+
+    if (node_childs == 0) {
+        generate_nodes(node);
+    } else {
+        #pragma  omp parallel
+        {
+            #pragma omp for schedule(guided, 5)
+            for (int i=0; i < node_childs; i++) {
+                Node_t *child = node->child;
+                for (int j=0; j < i; j++) {
+                        child = child->next;
+                }
+                if (child->child != NULL) {
+                    generate_nodes(child->child);
+                } else {
+                    get_moves(child);
+                }
+            }
+        }
+    }
+}
+
 static engine_info_t engine_think(Node_t *node)
 {
     engine_info_t info;
-    clock_t start, end;
+    double start, end;
     
-    start = get_clock_ms();
+    start = omp_get_wtime();
 
-    generate_nodes(node);
+    parallel_generation(node);
     get_best_move(node, info.mov);
 
-    end = get_clock_ms();
-    info.time = clock_diff_ms(end, start);
+    end = omp_get_wtime();
+    info.time = end - start;
     info.nodes_count = get_tree_count(node) - 1;
     if (info.time > 0) {
         info.nps = (info.nodes_count * 1000) / info.time;
@@ -75,12 +117,12 @@ static bool keep_running(engine_cfg_t cfg, uint32_t elapsed_time, uint8_t curren
     return true;        
 }
 
-static void log_info(engine_info_t info, uint8_t depth, uint32_t elapsed_time)
+static void log_info(engine_info_t info, uint8_t depth, double elapsed_time)
 {
     char msg[1000];
 
     if (log_func != NULL) {
-        sprintf(msg, "info depth %d score cp %d time %d nodes %d nps %d",
+        sprintf(msg, "info depth %d score cp %d time %f nodes %d nps %d",
               depth, info.score, elapsed_time, info.nodes_count,
               info.nps);
         log_func(msg);
@@ -95,7 +137,7 @@ void engine_set_log_func(void *func)
 char* engine_go(Node_t *node, engine_cfg_t cfg)
 {
     static engine_info_t info;
-    uint32_t elapsed_time = 0;
+    double elapsed_time = 0.0f;
     uint8_t current_depth = 0;
 
     char fen[MAX_FEN_LEN];
