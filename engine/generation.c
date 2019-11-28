@@ -114,7 +114,6 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece, char c
     get_notation_from_move(&move, new->notation);
     new->notation[4] = c;
     insert_node(parent, new);
-
     return RV_SUCCESS;
 }
 
@@ -155,7 +154,7 @@ static void make_promotion(Node_t *node, Move_t mov)
 {
     int8_t turn = TURN(node->board, mov.from[0], mov.from[1]);
     node->board[mov.from[0]][mov.from[1]] = 0;
-    int16_t piece;
+    int16_t piece = 0;
     
     switch (mov.to[0]) {
         case PROMOTION_QUEEN:
@@ -266,7 +265,6 @@ retval_t insert_move(Node_t *parent, Move_t move)
     get_notation_from_move(&move, new->notation);
     new->value = evaluate(new->board);
     insert_node(parent, new);
-
     return RV_SUCCESS;
 }
 
@@ -317,7 +315,6 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     get_notation_from_move(&move, new->notation);
 
     insert_node(parent, new);
-
     return RV_SUCCESS;
 }
 
@@ -344,7 +341,6 @@ retval_t insert_passant(Node_t *parent, Move_t move)
     get_notation_from_move(&move, new->notation);
     new->value = evaluate(new->board);
     insert_node(parent, new);
-
     return RV_SUCCESS;
 
 }
