@@ -24,6 +24,6 @@ log_priority_t get_priority_from_string(char *str);
 #define LOG(lev, msg)   (logging(lev, msg, ""))
 #define LOG2(lev, msg, msg2)   (logging(lev, msg, msg2))
 
-#define DEFAULT_LOG_DIR "/tmp/jupiter"
-#define DEFAULT_LOG_FILE "/tmp/jupiter/jupiter.log"
+#define DEFAULT_LOG_DIR "/var/log/jupiter"
+#define DEFAULT_LOG_FILE "/var/log/jupiter/jupiter.log"
 #endif

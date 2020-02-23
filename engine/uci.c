@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <poll.h>
+#include <pthread.h>
 
 #include "generation.h"
 #include "fen.h"
@@ -94,7 +95,16 @@ typedef struct {
         go_t go;
     } body;
 }command_t;
-   
+
+#define CMD_BUFFER_SIZE 5
+typedef struct {
+    command_t cmd[CMD_BUFFER_SIZE];
+    pthread_mutex_t mutex;
+    pthread_cond_t cond_prod;
+    pthread_cond_t cond_consum;
+    size_t len;
+}command_buffer_t;
+
 static void send_command(const char *cmd)
 {
     int fd = dup(STDOUT_FILENO);
@@ -294,12 +304,41 @@ static void uci_init()
     send_command(CMD_UCI_OK);
 }
 
-void uci_main()
+static void buffer_pop(command_buffer_t *buffer, command_t *cmd)
 {
+    pthread_mutex_lock(&buffer->mutex);
+
+    if(buffer->len == 0) { 
+        pthread_cond_wait(&buffer->cond_consum, &buffer->mutex);
+    }
+
+    --buffer->len;
+    memcpy(cmd, &(buffer->cmd[buffer->len]), sizeof(command_t));
+
+    pthread_cond_signal(&buffer->cond_prod);
+    pthread_mutex_unlock(&buffer->mutex);
+}
+
+static void buffer_push(command_buffer_t *buffer, command_t *cmd)
+{
+    pthread_mutex_lock(&buffer->mutex);
+
+    if(buffer->len == CMD_BUFFER_SIZE) { 
+        pthread_cond_wait(&buffer->cond_prod, &buffer->mutex);
+    }
+
+    memcpy(&(buffer->cmd[buffer->len]), cmd, sizeof(command_t));
+    ++buffer->len;
+
+    pthread_cond_signal(&buffer->cond_consum);
+    pthread_mutex_unlock(&buffer->mutex);
+}
+
+static void *command_receiver(void *buffer)
+{
+    command_buffer_t *buff = (command_buffer_t *) buffer;
     static char cmd_str[MAX_CMD_STR_LEN];
     static command_t cmd;
-
-    uci_init();
     
     while(true) {
         receive_command(cmd_str);
@@ -310,12 +349,14 @@ void uci_main()
             case SETOPT:
             case REGISTER:
             case NEWGAME:
-            case STOP:
             case PONDERHIT:
             case INVALID_CMD:
                 break;   
+            case STOP:
+                engine_stop();
+                break;
             case GO:
-                uci_go(&cmd);
+                buffer_push(buff, &cmd);
                 break;
             case POSITION:
                 uci_position(&cmd);
@@ -327,7 +368,55 @@ void uci_main()
                 uci_init();
                 break;
             case QUIT:
-                return;
+                buffer_push(buff, &cmd);
+                return NULL;
         }
     }
+    return NULL;
+}
+
+static void *command_executor(void *buffer)
+{
+    command_buffer_t *buff = (command_buffer_t *) buffer;
+    static command_t cmd;
+
+    while (true) {
+        buffer_pop(buff, &cmd);
+        if (cmd.code == GO) {
+            uci_go(&cmd);
+        }
+        if (cmd.code == QUIT) {
+            break;
+        }
+    } 
+
+    return NULL;
+}
+
+void uci_main()
+{
+    pthread_t receiver;
+    pthread_t executor;
+
+    command_buffer_t buffer = {
+        .mutex = PTHREAD_MUTEX_INITIALIZER,
+        .cond_prod = PTHREAD_COND_INITIALIZER,
+        .cond_consum = PTHREAD_COND_INITIALIZER,
+        .len = 0,
+    };
+
+    uci_init();
+
+    if (pthread_create(&receiver, NULL, &command_receiver, &buffer)) {
+        printf("Could not create pthread\n");
+        exit(1);
+    }
+
+    if (pthread_create(&executor, NULL, &command_executor, &buffer)) {
+        printf("Could not create pthread\n");
+        exit(1);
+    }
+    
+    pthread_join(receiver, NULL);
+    pthread_join(executor, NULL);
 }

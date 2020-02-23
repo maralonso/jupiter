@@ -12,6 +12,8 @@
 #include "fen.h"
 #include "logging.h"
 
+static bool engine_keep_running = true;
+
 static void (*log_func)(const char *info) = NULL;
 
 typedef struct {
@@ -100,11 +102,11 @@ static engine_info_t engine_think(Node_t *node)
 
 static bool keep_running(engine_cfg_t cfg, uint32_t elapsed_time, uint8_t current_depth)
 {
-    if (cfg.mode == ENGINE_INFINITE) {
-        //ask for command stop
+    if (!engine_keep_running) {
+        return false;
     }
     if (cfg.mode == ENGINE_TIME) {
-        if ((cfg.data.time / 5) < elapsed_time) {
+        if ((cfg.data.time / 5000) < elapsed_time) {
             return false;
         }
     }
@@ -143,6 +145,7 @@ char* engine_go(Node_t *node, engine_cfg_t cfg)
     char fen[MAX_FEN_LEN];
     get_fen_from_node(node, fen);
     LOG2(DEBUG, "Board: ", fen);
+    engine_keep_running = true;
 
     while (keep_running(cfg, elapsed_time, current_depth)) {
         info = engine_think(node);
@@ -154,3 +157,8 @@ char* engine_go(Node_t *node, engine_cfg_t cfg)
     delete_node(node);
     return info.mov;
 } 
+
+void engine_stop(void)
+{
+    engine_keep_running = false;
+}

@@ -17,5 +17,6 @@ typedef struct {
 
 void engine_set_log_func(void *func);
 char* engine_go(Node_t *node, engine_cfg_t cfg);
+void engine_stop(void);
 
 #endif

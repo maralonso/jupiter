@@ -46,7 +46,7 @@ retval_t logging_init()
         mkdir(DEFAULT_LOG_DIR, 0700);
     }
     
-    FILE *f = fopen(config.log_file, "w");
+    FILE *f = fopen(config.log_file, "a");
     if (f != NULL) {
         initialized = true;
         fclose(f);
