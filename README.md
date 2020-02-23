@@ -30,6 +30,7 @@ You can use it with any User Interface that support UCI protocol, like:
 ## Files
     * **engine**: Engine source files
     * **tests**: Engine tests source files
+    * **fics**: Script and files to play online
     * config: Engine configuration file.    
 
 ## Build and run engine
@@ -55,3 +56,8 @@ By default the engine will log to `./jupiter.log`
 
 `LOG_FILE = jupiter.log`
 
+
+## Play online on FICS
+
+`fics/callipsto.py` will connect to FICS as guest, and plays random games using Jupiter engine.
+Games are saved as .pgn files.
