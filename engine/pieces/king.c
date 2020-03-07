@@ -19,12 +19,14 @@ static retval_t king_moves(Node_t *node, square sq, uint8_t file, uint8_t col)
 static retval_t check_short_castle_squares(Node_t *node)
 {
     uint8_t file = node->turn == WHITE ? FILE_1: FILE_8; 
+    square e = {file, COL_E};
     square f = {file, COL_F};
     square g = {file, COL_G};
     if (node->board[file][COL_E] == (KING * node->turn) &&
         node->board[file][COL_H] == (ROOK * node->turn) &&
         node->board[file][COL_F] == 0 &&
         node->board[file][COL_G] == 0 &&
+        !square_attaked(node, e) &&
         !square_attaked(node, f) && 
         !square_attaked(node, g)) {  
         
@@ -40,6 +42,7 @@ static retval_t check_long_castle_squares(Node_t *node)
     square b = {file, COL_B};
     square c = {file, COL_C};
     square d = {file, COL_D};
+    square e = {file, COL_E};
     if (node->board[file][COL_E] == (KING * node->turn) && 
         node->board[file][COL_A] == (ROOK * node->turn) && 
         node->board[file][COL_B] == 0 &&
@@ -47,7 +50,8 @@ static retval_t check_long_castle_squares(Node_t *node)
         node->board[file][COL_D] == 0 &&
         !square_attaked(node, b) && 
         !square_attaked(node, c) && 
-        !square_attaked(node, d)) {
+        !square_attaked(node, d) &&
+        !square_attaked(node, e)) {
         
         return RV_SUCCESS;
 
