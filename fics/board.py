@@ -66,7 +66,7 @@ def king_castle(move):
 
     if move[0] == 'e' and move[2] == 'g':    
         return 'O-O'
-    if move[1] == 'e' and move[3] == 'c':
+    if move[0] == 'e' and move[2] == 'c':
         return 'O-O-O'
 
     return None   
