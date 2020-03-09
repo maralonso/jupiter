@@ -182,14 +182,14 @@ TEST(test_king_takes)
     rv = get_king_moves(node, king); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(9, count);
+    assertEquals(6, count);
     
     node->turn = BLACK;
     square king_b = {FILE_7, COL_D};
     rv = get_king_moves(node, king_b); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(count, 17);
+    assertEquals(count, 11);
 }
 
 TEST(test_king_short_castles)
@@ -348,14 +348,14 @@ TEST(test_king_short_castle_on_check)
     rv = get_king_moves(node, king); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(3, count);
+    assertEquals(2, count);
    
     node->turn = BLACK;
     square king_b = {FILE_8, COL_E};
     rv = get_king_moves(node, king_b); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(5, count);
+    assertEquals(3, count);
 
 }
 
@@ -382,13 +382,13 @@ TEST(test_king_long_castle_on_check)
     rv = get_king_moves(node, king); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(3, count);
+    assertEquals(2, count);
    
     node->turn = BLACK;
     square king_b = {FILE_8, COL_E};
     rv = get_king_moves(node, king_b); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(5, count);
+    assertEquals(3, count);
 
 }
