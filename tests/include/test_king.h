@@ -10,6 +10,8 @@ TEST(test_king_short_castles);
 TEST(test_king_long_castles);
 TEST(test_king_no_castles);
 TEST(test_king_no_castles2);
+TEST(test_king_short_castle_on_check);
+TEST(test_king_long_castle_on_check);
 
 TEST_SUITE(king_moves) {
     TEST_ADD(test_king_no_moves),
@@ -22,5 +24,7 @@ TEST_SUITE(king_moves) {
     TEST_ADD(test_king_long_castles),
     TEST_ADD(test_king_no_castles),
     TEST_ADD(test_king_no_castles2),
+    TEST_ADD(test_king_short_castle_on_check),
+    TEST_ADD(test_king_long_castle_on_check),
     TEST_SUITE_CLOSURE
 };

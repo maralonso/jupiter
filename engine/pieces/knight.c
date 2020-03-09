@@ -22,7 +22,7 @@ static retval_t knight_moves(Node_t *node, square sq, uint8_t file, uint8_t col)
 
         if ((node->board[file][col] * node->turn) <= 0) {
             Move_t mov = {{sq[0], sq[1]}, {file, col}};
-            SUCCES_OR_RETURN(insert_move(node, mov));
+            insert_move(node, mov);
         }
     }
 

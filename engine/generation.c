@@ -9,6 +9,8 @@
 
 extern  retval_t WALK_BOARD(Node_t *node, Walk_Function func, square to);
 
+bool _is_on_check(Node_t *node, int8_t color);
+
 static void copy_initial_board(Board *board)
 {
     memcpy(board, initial_board, sizeof(initial_board));
@@ -107,6 +109,11 @@ static retval_t new_promotion(Node_t *parent, Move_t move, int16_t piece, char c
     new->turn   = parent->turn * -1;
     new->castles = parent->castles;
     memcpy(&new->board, &parent->board, sizeof(Board));
+
+    if (_is_on_check(new, parent->turn)) {
+        delete_node(new);
+        return RV_ERROR;
+    }
 
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = piece;
@@ -260,8 +267,15 @@ retval_t insert_move(Node_t *parent, Move_t move)
         clear_castle(new, move);
     }
 
+
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = aux;
+    
+    if (_is_on_check(new, parent->turn)) {
+        delete_node(new);
+        return RV_ERROR;
+    }
+
     get_notation_from_move(&move, new->notation);
     new->value = evaluate(new->board);
     insert_node(parent, new);
@@ -309,8 +323,13 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     new->board[file][rook] = 0;
     new->board[file][rook] = 0;
     new->board[file][rook] = 0;
-    new->value = evaluate(new->board); 
     
+    if (_is_on_check(new, parent->turn)) {
+        delete_node(new);
+        return RV_ERROR;
+    }
+
+    new->value = evaluate(new->board); 
     Move_t move = {{file, COL_E}, {file, new_king}};
     get_notation_from_move(&move, new->notation);
 
@@ -338,6 +357,12 @@ retval_t insert_passant(Node_t *parent, Move_t move)
     new->board[move.from[0]][move.from[1]] = 0;
     new->board[move.to[0]][move.to[1]] = aux;
     make_passant(new, move);
+
+    if (_is_on_check(new, parent->turn)) {
+        delete_node(new);
+        return RV_ERROR;
+    }
+
     get_notation_from_move(&move, new->notation);
     new->value = evaluate(new->board);
     insert_node(parent, new);
@@ -349,3 +374,35 @@ bool square_attaked(Node_t *node, square sq)
 {
     return WALK_BOARD(node,check_square_safe, sq) != RV_SUCCESS;
 }
+
+retval_t _get_king_position(Node_t *node, int8_t color, square *sq)
+{
+    for (int i = FILE_1; i <= FILE_8; i++) {
+        for (int j = COL_A; j <= COL_H; j++) {
+            if (node->board[i][j] == (KING * color)) {
+                sq[0][0] = i;
+                sq[0][1] = j;
+                return RV_SUCCESS;
+            }
+        }
+    }
+    return RV_ERROR;
+}
+
+bool _is_on_check(Node_t *node, int8_t color)
+{
+    retval_t rv;
+    square sq;
+
+    rv = _get_king_position(node, color, &sq);
+
+    if (rv == RV_SUCCESS) {
+        node->turn *= -1;
+        bool r = square_attaked(node, sq);
+        node->turn *= -1;
+        return r;
+    } else {
+        return false;
+    }
+}
+
