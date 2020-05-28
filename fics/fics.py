@@ -16,19 +16,28 @@ class FICSHandler:
     
     FICS_URL = 'freechess.org'
     FICS_PORT = 5000
-    FICS_USER = 'guest\n'
+    GUEST_USER = 'guest'
     FICS_PROMPT = 'fics%'
+    SEEK_5_CMD = 'seek 5'
+    SEEK_10_CMD = 'seek 10'
+    SEEK_15_CMD = 'seek 15'
 
     def __init__(self, url=None, port=None, user=None):
         self.url = url or self.FICS_URL
         self.port = port or self.FICS_PORT
-        self.user = user or self.FICS_USER
 
-    def _login(self):
+    def _login(self, user, passw):
         self.telnet.read_until(b'login: ')
-        self.telnet.write(self.user.encode())
-        self.telnet.read_until('enter the server as "'.encode())
-        self.user = self.telnet.read_until(b'"').decode()[:-1]
+        self.telnet.write(user.encode())
+        self.telnet.write('\n'.encode())
+        if self.GUEST_USER in user:
+            self.telnet.read_until('enter the server as "'.encode())
+            self.user = self.telnet.read_until(b'"').decode()[:-1]
+        else:
+            self.telnet.read_until('password:'.encode())
+            self.telnet.write(passw.encode())
+            self.telnet.write('\n'.encode())
+
         self.telnet.write('\n'.encode())
         logging.info("Connected to %s as %s", self.url, self.user)
 
@@ -92,15 +101,33 @@ class FICSHandler:
         return True
 
     @contextmanager    
-    def connect(self):
+    def connect(self, user, passw):
         self.telnet = Telnet(host=self.url, port=self.port)
-        self._login()
+        self.user = user
+        self._login(user, passw)
         self._config()
         try:
             yield
         finally:
             self.telnet.close()        
         
+    def seek_game(self):
+        logging.info('seeking games...')
+        self.telnet.write(self.SEEK_5_CMD.encode())
+        self.telnet.write(b'\n')
+        self.telnet.write(self.SEEK_10_CMD.encode())
+        self.telnet.write(b'\n')
+        self.telnet.write(self.SEEK_15_CMD.encode())
+        self.telnet.write(b'\n')
+        output = self.telnet.read_until('Creating: '.encode()).decode()
+        game = self.telnet.read_until(b'{').decode()
+        logging.info('Playing ' + game[:-1])
+        self.telnet.read_until(b'}').decode()
+        position = self._get_move()
+        color = 'W' if self.user in position['white'] else 'B'
+        turn = color == position['turn']
+        return position, turn
+
     def find_game(self):  
         logging.info('Looking for games...')
         pattern = re.compile('[\d]+[\s ][\d+]+\s+[\w()]+\s+[\d]+\s+[\d]+\s+[\w]+\s+[\w]+')
@@ -128,7 +155,6 @@ class FICSHandler:
     def wait_move(self):
         while True:
             output = self.telnet.read_until(self.FICS_PROMPT.encode()).decode()
-
             if 'Illegal move' in output:
                 logging.error(output)
                 raise IllegalMove

@@ -2,6 +2,7 @@
 
 import logging
 import time
+import argparse
 
 from fics import FICSHandler, GameEnd, IllegalMove
 from engine import EngineHandler
@@ -50,17 +51,20 @@ def log_end_game(result):
     with open(PGN_FILE, 'a+') as pgn:
         pgn.write(' ' + result)
 
-if __name__ == '__main__':
+
+def main(options):
 
     fics = FICSHandler()
-    engine = EngineHandler('engine/jupiter')
+    engine = EngineHandler(options.engine)
 
-
-    with fics.connect():
-
+    with fics.connect(options.user, options.password):
         while True:
-            position, turn = fics.find_game()
-            log_new_game(position, fics.user)
+            if FICSHandler.GUEST_USER in options.user:
+                position, turn = fics.find_game()
+            else:
+                position, turn = fics.seek_game()
+
+            log_new_game(position, options.user)
             while True:
                 if turn:
                     move = engine.make_move(position)
@@ -86,4 +90,14 @@ if __name__ == '__main__':
                         result = '1-0' if position['black'] == fics.user else '0-1'
                         log_end_game(result)
                         break
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-u', '--user', help='FICS username', default=FICSHandler.GUEST_USER)
+    parser.add_argument('-p', '--password', help='FICS password')
+    parser.add_argument('-e', '--engine', help='Engine binary file', default='engine/jupiter')
+    args = parser.parse_args()
+
+    main(args)
 
