@@ -59,5 +59,22 @@ By default the engine will log to `./jupiter.log`
 
 ## Play online on FICS
 
-`fics/callipsto.py` will connect to FICS as guest, and plays random games using Jupiter engine.
+You can find jupiter on FICS as `JupiterCallisto`, so go and play some games against him.
+
+Also, you can connect jupiter, or other chess engine using `fics/callipsto.py` script.
+`fics/callipsto.py` will connect to FICS as guest, and plays random games.
 Games are saved as .pgn files.
+
+
+```
+fics/callisto.py --help
+usage: callisto.py [-h] [-u USER] [-p PASSWORD] [-e ENGINE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u USER, --user USER  FICS username
+  -p PASSWORD, --password PASSWORD
+                        FICS password
+  -e ENGINE, --engine ENGINE
+                        Engine binary file
+```
