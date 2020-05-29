@@ -60,8 +60,13 @@ class FICSHandler:
         stream = re.sub('.*<12>', '', stream)
         position['board'] = re.findall('([\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8})', stream)[0]
         stream = re.sub(position['board'], '', stream)
-        values = stream.split()[1:]
     
+        try:
+            stream = stream[stream.index('W'):]
+        except ValueError:
+            stream = stream[stream.index('B'):]
+
+        values = stream.split()
         position['turn'] = values[0]
         position['double_push'] = values[1]
         position['w_short_castle'] = values[2]
@@ -112,21 +117,24 @@ class FICSHandler:
             self.telnet.close()        
         
     def seek_game(self):
-        logging.info('seeking games...')
-        self.telnet.write(self.SEEK_5_CMD.encode())
-        self.telnet.write(b'\n')
-        self.telnet.write(self.SEEK_10_CMD.encode())
-        self.telnet.write(b'\n')
-        self.telnet.write(self.SEEK_15_CMD.encode())
-        self.telnet.write(b'\n')
-        output = self.telnet.read_until('Creating: '.encode()).decode()
-        game = self.telnet.read_until(b'{').decode()
-        logging.info('Playing ' + game[:-1])
-        self.telnet.read_until(b'}').decode()
-        position = self._get_move()
-        color = 'W' if self.user in position['white'] else 'B'
-        turn = color == position['turn']
-        return position, turn
+        while True:
+            logging.info('seeking games...')
+            self.telnet.write(self.SEEK_5_CMD.encode())
+            self.telnet.write(b'\n')
+            self.telnet.write(self.SEEK_10_CMD.encode())
+            self.telnet.write(b'\n')
+            self.telnet.write(self.SEEK_15_CMD.encode())
+            self.telnet.write(b'\n')
+            output = self.telnet.read_until('Creating: '.encode(), timeout=(60 * 10)).decode()
+
+            if 'Creating: ' in output:
+                game = self.telnet.read_until(b'{').decode()
+                logging.info('Playing ' + game[:-1])
+                self.telnet.read_until(b'}').decode()
+                position = self._get_move()
+                color = 'W' if self.user in position['white'] else 'B'
+                turn = color == position['turn']
+                return position, turn
 
     def find_game(self):  
         logging.info('Looking for games...')
