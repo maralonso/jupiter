@@ -51,7 +51,7 @@ static retval_t pawn_passant(Node_t *node, square sq, uint8_t file, uint8_t col)
 {
     if (node->passant == col && ((node->board[file][col] * node->turn) < 0) &&
         file == sq[0]  && abs(col -sq[1]) == 1) {
-            Move_t mov = {{sq[0], sq[1]}, {file, col}};
+            Move_t mov = {{sq[0], sq[1]}, {file + node->turn, col}};
             SUCCES_OR_RETURN(insert_passant(node, mov));
     }
     return RV_SUCCESS;
@@ -60,11 +60,7 @@ static retval_t pawn_passant(Node_t *node, square sq, uint8_t file, uint8_t col)
 retval_t get_pawn_moves(Node_t *node, square sq)
 {
     retval_t rv;
-    uint8_t rotation = ROTATION_0 | ROTATION_270;
-
-    if (node->turn == BLACK) {
-        rotation = ~rotation;
-    }
+    uint8_t rotation = ROTATION_0 | ROTATION_270 | ROTATION_90 | ROTATION_180;
 
     if ((sq[0] + node->turn) % 7 == 0) {
         return exec_with_rotation(node, sq, rotation, pawn_promote);
