@@ -24,75 +24,23 @@ typedef struct {
     double time;
 } engine_info_t;
 
-static int get_node_childs(Node_t *node)
-{
-    Node_t *aux;
-    int count = 0;
-    if (node->child != NULL) {
-        aux = node->child;
-        while (aux != NULL) {
-            count++;
-            aux = aux->next;
-        }
-    }
-
-    return count;
-}
-
-static void generate_nodes(Node_t *node)
-{
-    Node_t *aux = node;
-
-    while(aux != NULL) {
-        if (aux->child != NULL) {
-            generate_nodes(aux->child);
-        } else { 
-            get_moves(aux);
-        }
-        aux = aux->next;
-    }
-}
-
-static void parallel_generation(Node_t *node)
-{
-    int node_childs = get_node_childs(node);
-
-    if (node_childs == 0) {
-        generate_nodes(node);
-    } else {
-        #pragma  omp parallel
-        {
-            #pragma omp for schedule(guided, 5)
-            for (int i=0; i < node_childs; i++) {
-                Node_t *child = node->child;
-                for (int j=0; j < i; j++) {
-                        child = child->next;
-                }
-                if (child->child != NULL) {
-                    generate_nodes(child->child);
-                } else {
-                    get_moves(child);
-                }
-            }
-        }
-    }
-}
-
 static engine_info_t engine_think(Node_t *node)
 {
     engine_info_t info;
     double start, end;
-    
+    uint64_t perft_nodes;
+
     start = omp_get_wtime();
 
-    parallel_generation(node);
+    generate(node);
     get_best_move(node, info.mov);
 
     end = omp_get_wtime();
     info.time = end - start;
     info.nodes_count = get_tree_count(node) - 1;
+    perft_nodes = perft(node);
     if (info.time > 0) {
-        info.nps = (info.nodes_count * 1000) / info.time;
+        info.nps = (perft_nodes * 1000) / info.time;
     } else {
         info.nps = 0;
     }

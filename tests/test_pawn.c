@@ -153,14 +153,14 @@ TEST(test_pawn_promote)
     rv = get_pawn_moves(node, pawn); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(10, count);
+    assertEquals(13, count);
     
     node->turn = BLACK;
     square pawn_b = {FILE_2, COL_G};
     rv = get_pawn_moves(node, pawn_b); 
     assertEquals(rv, RV_SUCCESS);
     count = get_tree_count(node);
-    assertEquals(19, count);
+    assertEquals(25, count);
 }
 
 TEST(test_pawn_attak_square)

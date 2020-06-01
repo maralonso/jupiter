@@ -79,6 +79,7 @@
 #define PROMOTION_QUEEN   0x41
 #define PROMOTION_KNIGHT  0x42
 #define PROMOTION_BISHOP  0x43
+#define PROMOTION_ROOK    0x44
 
 
 typedef int8_t  square[2];
