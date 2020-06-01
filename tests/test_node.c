@@ -61,3 +61,32 @@ TEST(test_delete_node)
     count = get_tree_count(node);
     assertEquals(count, 1);
 }
+
+TEST(test_get_deep_count)
+{
+    uint8_t deep_count;
+    Node_t *node;
+    retval_t rv;
+    rv = move_init(&node);
+    assertEquals(rv, RV_SUCCESS);
+
+    rv = get_moves(node);
+    assertEquals(rv, RV_SUCCESS);
+    deep_count = get_deep_count(node);
+    assertEquals(1, deep_count);
+
+    rv = get_moves(node->child);
+    assertEquals(rv, RV_SUCCESS);
+    deep_count = get_deep_count(node);
+    assertEquals(2, deep_count);
+
+    rv = get_moves(node->child->child);
+    assertEquals(rv, RV_SUCCESS);
+    deep_count = get_deep_count(node);
+    assertEquals(3, deep_count);
+
+    rv = get_moves(node->child->child->child);
+    assertEquals(rv, RV_SUCCESS);
+    deep_count = get_deep_count(node);
+    assertEquals(4, deep_count);
+}
