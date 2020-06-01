@@ -48,7 +48,6 @@ static retval_t check_long_castle_squares(Node_t *node)
         node->board[file][COL_B] == 0 &&
         node->board[file][COL_C] == 0 &&
         node->board[file][COL_D] == 0 &&
-        !square_attaked(node, b) && 
         !square_attaked(node, c) && 
         !square_attaked(node, d) &&
         !square_attaked(node, e)) {
