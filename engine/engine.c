@@ -28,7 +28,8 @@ static engine_info_t engine_think(Node_t *node)
 {
     engine_info_t info;
     double start, end;
-    
+    uint64_t perft_nodes;
+
     start = omp_get_wtime();
 
     generate(node);
@@ -37,8 +38,9 @@ static engine_info_t engine_think(Node_t *node)
     end = omp_get_wtime();
     info.time = end - start;
     info.nodes_count = get_tree_count(node) - 1;
+    perft_nodes = perft(node);
     if (info.time > 0) {
-        info.nps = (info.nodes_count * 1000) / info.time;
+        info.nps = (perft_nodes * 1000) / info.time;
     } else {
         info.nps = 0;
     }
