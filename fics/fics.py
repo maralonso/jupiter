@@ -60,37 +60,51 @@ class FICSHandler:
         stream = re.sub('.*<12>', '', stream)
         position['board'] = re.findall('([\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8} [\w-]{8})', stream)[0]
         stream = re.sub(position['board'], '', stream)
-    
+
+        w_index = b_index = len(stream)
         try:
-            stream = stream[stream.index('W'):]
+            w_index = stream.index('W')
         except ValueError:
-            stream = stream[stream.index('B'):]
+            pass
 
-        values = stream.split()
-        position['turn'] = values[0]
-        position['double_push'] = values[1]
-        position['w_short_castle'] = values[2]
-        position['w_long_castle'] = values[3]
-        position['b_short_castle'] = values[4]
-        position['b_long_castle'] = values[5]
-        position['reversible_moves'] = values[6]
-        position['game_n'] = values[7]
-        position['white'] = values[8]
-        position['black'] = values[9]
-        position['relation'] = values[10]
-        position['initial_time'] = values[11]
-        position['increment'] = values[12]
-        position['w_material'] = values[13]
-        position['b_material'] = values[14]
-        position['w_time'] = values[15]
-        position['b_time'] = values[16]
-        position['move_n'] = values[17]
-        position['verbose'] = values[18]
-        position['time_taken'] = values[19]
-        position['notation'] = values[20]
-        position['orientation'] = values[21]
+        try:
+            b_index = stream.index('B')
+        except ValueError:
+            pass
 
-        return position
+        index = min(w_index, b_index)
+
+        try:
+            stream = stream[index:]
+            values = stream.split()
+            position['turn'] = values[0]
+            position['double_push'] = values[1]
+            position['w_short_castle'] = values[2]
+            position['w_long_castle'] = values[3]
+            position['b_short_castle'] = values[4]
+            position['b_long_castle'] = values[5]
+            position['reversible_moves'] = values[6]
+            position['game_n'] = values[7]
+            position['white'] = values[8]
+            position['black'] = values[9]
+            position['relation'] = values[10]
+            position['initial_time'] = values[11]
+            position['increment'] = values[12]
+            position['w_material'] = values[13]
+            position['b_material'] = values[14]
+            position['w_time'] = values[15]
+            position['b_time'] = values[16]
+            position['move_n'] = values[17]
+            position['verbose'] = values[18]
+            position['time_taken'] = values[19]
+            position['notation'] = values[20]
+            position['orientation'] = values[21]
+
+            return position
+        except:
+            print("fail decoding")
+            print(stream)
+            print(values)
 
     def _get_move(self):
         while True:
