@@ -21,7 +21,7 @@ static retval_t pawn_moves(Node_t *node, square sq, uint8_t file, uint8_t col)
     if ((col == sq[1])  && (file == (sq[0] + node->turn))) {
         if ((node->board[file][col] == 0)) {
             Move_t mov = {{sq[0], sq[1]}, {file, col}};
-            SUCCES_OR_RETURN(insert_move(node, mov));
+            insert_move(node, mov);
         }
     }
     if (sq[0] == ((node->turn + 7) % 7) &&
@@ -29,7 +29,7 @@ static retval_t pawn_moves(Node_t *node, square sq, uint8_t file, uint8_t col)
        node->board[file - node->turn][col] == 0) {
         if ((node->board[file][col] == 0)) {
             Move_t mov = {{sq[0], sq[1]}, {file, col}};
-            SUCCES_OR_RETURN(insert_move(node, mov));
+            insert_move(node, mov);
         }
     }
     return RV_SUCCESS;
