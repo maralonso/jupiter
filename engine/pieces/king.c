@@ -39,7 +39,6 @@ static retval_t check_short_castle_squares(Node_t *node)
 static retval_t check_long_castle_squares(Node_t *node)
 {
     uint8_t file = node->turn == WHITE ? FILE_1: FILE_8; 
-    square b = {file, COL_B};
     square c = {file, COL_C};
     square d = {file, COL_D};
     square e = {file, COL_E};
