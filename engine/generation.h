@@ -12,5 +12,6 @@ retval_t insert_promotion(Node_t *parent, Move_t move);
 retval_t insert_castle(Node_t * parent, uint8_t castle);
 retval_t insert_passant(Node_t *parent, Move_t move);
 bool square_attaked(Node_t *node, square sq);
+void generate(Node_t *node);
 
 #endif

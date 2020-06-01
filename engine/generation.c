@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "evaluation.h"
 #include "notation.h"
+#include <omp.h>
 
 extern  retval_t WALK_BOARD(Node_t *node, Walk_Function func, square to);
 
@@ -316,7 +317,6 @@ retval_t insert_castle(Node_t * parent, uint8_t castle)
     uint8_t rook = castle & SHORT_CASTLES ? COL_H: COL_A;
     uint8_t new_rook = castle & SHORT_CASTLES ? COL_F: COL_D;
     uint8_t new_king = castle & SHORT_CASTLES ? COL_G: COL_C;
-
     new->board[file][new_rook] = new->board[file][rook];
     new->board[file][new_king] = new->board[file][COL_E];
     new->board[file][COL_E] = 0;
@@ -403,6 +403,60 @@ bool _is_on_check(Node_t *node, int8_t color)
         return r;
     } else {
         return false;
+    }
+}
+
+static void generate_nodes(Node_t *node)
+{
+    Node_t *aux = node;
+
+    while(aux != NULL) {
+        if (aux->child != NULL) {
+            generate_nodes(aux->child);
+        } else { 
+            get_moves(aux);
+        }
+        aux = aux->next;
+    }
+}
+
+static int get_node_childs(Node_t *node)
+{
+    Node_t *aux;
+    int count = 0;
+    if (node->child != NULL) {
+        aux = node->child;
+        while (aux != NULL) {
+            count++;
+            aux = aux->next;
+        }
+    }
+
+    return count;
+}
+
+void generate(Node_t *node)
+{
+    int node_childs = get_node_childs(node);
+
+    if (node_childs == 0) {
+        generate_nodes(node);
+    } else {
+        #pragma  omp parallel
+        {
+            #pragma omp for schedule(guided, 5)
+            for (int i=0; i < node_childs; i++) {
+                Node_t *child = node->child;
+                for (int j=0; j < i; j++) {
+                        child = child->next;
+                }
+                if (child->child != NULL) {
+                    generate_nodes(child->child);
+                } else {
+                    get_moves(child);
+                }
+            }
+        }
     }
 }
 
