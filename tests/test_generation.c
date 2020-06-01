@@ -312,6 +312,39 @@ TEST(test_make_move_passant)
     assertEquals(0, node2.board[FILE_4][COL_F]);
 }
 
+TEST(test_passant_flag_is_set)
+{
+    uint64_t node_count;
+    Node_t *node;
+    char fen[] = "8/8/8/8/5p2/5P2/4P3/8 w - - 0 0";
+    node = create_node();
+    retval_t rv = get_node_from_fen(node, fen);
+    assertEquals(rv, RV_SUCCESS);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(2, node_count);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(2, node_count);
+
+    Node_t *node2;
+    char fen2[] = "8/2p5/3p4/3P4/8/8/8/8 b - - 0 0";
+    node2 = create_node();
+    rv = get_node_from_fen(node2, fen2);
+    assertEquals(rv, RV_SUCCESS);
+
+    generate(node2);
+    node_count = perft(node2);
+    assertEquals(2, node_count);
+
+    generate(node2);
+    node_count = perft(node2);
+    assertEquals(2, node_count);
+
+}
+
 TEST(test_make_move_promotion)
 {
     Node_t node, node2;
@@ -346,7 +379,7 @@ TEST(test_perft_1)
     uint64_t node_count;
     Node_t *node;
     move_init(&node);
-
+    
     generate(node);
     node_count = perft(node);
     assertEquals(node_count, 20);
@@ -362,4 +395,155 @@ TEST(test_perft_1)
     generate(node);
     node_count = perft(node);
     assertEquals(node_count, 197281);
+    delete_node(node);
+}
+
+TEST(test_perft_2)
+{
+    uint64_t node_count;
+    Node_t *node;
+    retval_t rv;
+    node = create_node();
+
+    char fen[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 0";
+    rv = get_node_from_fen(node, fen);
+    assertEquals(rv, RV_SUCCESS);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 48);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 2039);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 97862);
+
+    /*
+    generate(node);
+    node_count = perft(node);
+    printf("\nnode count %ld\n", node_count);
+    assertEquals(node_count, 4085603);
+    */
+    delete_node(node);
+}
+
+TEST(test_perft_3)
+{
+    uint64_t node_count;
+    Node_t *node;
+    retval_t rv;
+    node = create_node();
+
+    char fen[] = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 0";
+    rv = get_node_from_fen(node, fen);
+    assertEquals(rv, RV_SUCCESS);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 14);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 191);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 2812);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 43238);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 674624);
+    delete_node(node);
+}
+
+TEST(test_perft_4)
+{
+    uint64_t node_count;
+    Node_t *node;
+    retval_t rv;
+    node = create_node();
+
+    char fen[] = "r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1";
+    rv = get_node_from_fen(node, fen);
+    assertEquals(rv, RV_SUCCESS);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 6);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 264);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 9467);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 422333);
+    delete_node(node);
+}
+
+TEST(test_perft_5)
+{
+    uint64_t node_count;
+    Node_t *node;
+    retval_t rv;
+    node = create_node();
+
+    char fen[] = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
+    rv = get_node_from_fen(node, fen);
+    assertEquals(rv, RV_SUCCESS);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 44);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 1486);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 62379);
+
+    /*
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 2103487);
+    */
+    delete_node(node);
+}
+
+TEST(test_perft_6)
+{
+    uint64_t node_count;
+    Node_t *node;
+    retval_t rv;
+    node = create_node();
+
+    char fen[] = "r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10";
+    rv = get_node_from_fen(node, fen);
+    assertEquals(rv, RV_SUCCESS);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 46);
+
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 2079);
+    
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 89890);
+    delete_node(node);
 }
