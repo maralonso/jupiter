@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "fen.h"
 #include "notation.h"
+#include "engine.h"
 
 
 TEST(test_move_init)
@@ -340,8 +341,25 @@ TEST(test_make_move_promotion)
     assertEquals(0, node2.board[FILE_7][COL_E]);
 }
 
+TEST(test_perft_1)
+{
+    uint64_t node_count;
+    Node_t *node;
+    move_init(&node);
 
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 20);
 
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 400);
 
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 8902);
 
-
+    generate(node);
+    node_count = perft(node);
+    assertEquals(node_count, 197281);
+}
